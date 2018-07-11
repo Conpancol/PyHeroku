@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'materials/style.css' %}" />
+<link rel="icon" href="{% static 'materials/favicon.ico' %}" type="image/x-icon" />
+<link rel="shortcut icon" href="{% static 'materials/favicon.ico' %}" type="image/x-icon" />
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CONPANCOL DB Manager</title>
+  </head>
+
+  <body>
+
+  <div class="header-cont">
+    <img class="img-logo" src="{% static 'materials/images/Conpancol-minus.png' %}" alt="LOGO">
+  </div>
+
+    {% block content %}
+    {% endblock %}
+
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">A Phystech software</span>
+      </div>
+    </footer>
+
+  </body>
+</html>
