@@ -11,6 +11,7 @@ import os
 
 from common.BackendMessage import BackendMessage
 from common.MachineConfig import MachineConfigurator
+from common.Instructions import Instructions
 
 
 def cleanup(filename):
@@ -24,6 +25,9 @@ def cleanup(filename):
 @login_required(login_url='/auth/login')
 def simple_upload(request):
     try:
+
+        instructions = Instructions('materials', 'upload')
+
         if request.method == 'POST' and request.FILES['myfile']:
 
             myfile = request.FILES['myfile']
@@ -59,5 +63,6 @@ def simple_upload(request):
         print("There is a problem with the backend return value")
         return render(request, 'materials/simple_upload.html', {'error_message': 'Backend problem'})
 
-    return render(request, 'materials/simple_upload.html')
+    return render(request, 'materials/simple_upload.html', {'instructions_title': instructions.getTitle(),
+                                                            'instructions_steps': instructions.getSteps()})
 

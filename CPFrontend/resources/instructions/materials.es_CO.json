@@ -1,0 +1,12 @@
+{
+  "upload" :
+    {
+      "title": "Si el material o materiales no están en la base de datos, proceder de esta forma:",
+      "steps": {
+        "1": "Digitalizar los datos del requerimiento. Usar Excel.",
+        "2": "Una vez terminado el paso anterior, organizar en una hoja aparte las siguientes columnas: COL1 > Un consecutivo o contador (ejemplo: 1,2,3,...), COL2 > el id del material (ejemplo: 1234567890), COL3 > la descripción del material.",
+        "3": "Exportar esta hoja a un archivo de texto. En Excel esto se hace mediante \"Guardar como\" > \"Texto delimitado por tabulaciones (*.txt)\".",
+        "4": "En esta aplicación, seleccionar este archivo para subir a la base de datos."
+      }
+    }
+}

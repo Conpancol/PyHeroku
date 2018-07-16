@@ -403,7 +403,6 @@ textarea:focus {
     background: transparent;
     border:2px solid #8ed9f6;
 }
-
 .footer {
     position: fixed;
     left: 0;
@@ -413,4 +412,12 @@ textarea:focus {
     color: #3e4444;
     text-align: center;
     height: 40px;
+}
+.card{
+    color: whitesmoke;
+    background-color: transparent;
+}
+.list-group-item {
+    background-color: transparent;
+    border: 0px solid rgba(0,0,0,.125);
 }

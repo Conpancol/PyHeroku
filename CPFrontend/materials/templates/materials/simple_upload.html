@@ -71,6 +71,30 @@
       <p> {{ error_message }} </p>
   {% endif %}
 
+
+   {% if instructions_title %}
+
+        <p>
+          <button class="btn btn-secondary btn-sm" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            Instructions
+          </button>
+        </p>
+
+        <div class="collapse" id="collapseExample">
+          <div class="card">
+              <div class="card-header">{{instructions_title}}</div>
+                <div class="card card-body">
+                    <ul class="list-group">
+                    {% for key, values in instructions_steps.items %}
+                        <li class="list-group-item">{{key}}. {{values}}</li>
+                    {% endfor%}
+                    </ul>
+                </div>
+          </div>
+        </div>
+
+    {% endif %}
+
 </div>
 
 {% endblock %}

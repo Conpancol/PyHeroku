@@ -14,15 +14,21 @@ types = ['CS',
          'GS',
          'BURNING BARS',
          'SX',
-         'COAL']
+         'COAL',
+         'BRICK',
+         'CEMENT',
+         'MORTAR',
+         'AL203']
 
 dimdesc = ['MM', '\"', '/', 'SCH']
+
 
 def find_type(description):
     for tp in types:
         if any(tp in s for s in description):
             return tp
     return 'NA'
+
 
 def find_dimensions(description):
     dimensions = []
