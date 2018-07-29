@@ -10,12 +10,13 @@
 
 {% endblock %}
 
-
 {% block content %}
 
 <div class="content">
 
-  <h2>CSV file upload to DB</h2>
+  <h2>Materials cross checks</h2>
+
+  <h4>Query for multiple materials</h4>
 
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
@@ -28,7 +29,7 @@
       <input class="form-control" type="file" name="myfile">
     </div>
 
-    <button type="submit" class="btn btn-success">Upload</button>
+    <button type="submit" class="btn btn-success">Submit</button>
 
   </form>
 
@@ -39,6 +40,7 @@
           <thead>
             <tr>
                 <th scope="col">Itemcode</th>
+                <th scope="col">Description</th>
                 <th scope="col">Status</th>
             </tr>
           </thead>
@@ -46,7 +48,9 @@
             <tr>
             {% for material in uploaded_materials %}
             <tr>
-                <td>{{ material.itemcode }}</td> <td>{{ material.status }}</td>
+                <td>{{ material.itemcode }}</td>
+                <td>{{ material.description }}</td>
+                <td>{{ material.status }}</td>
             </tr>
             {% endfor %}
         </tbody>

@@ -11,6 +11,7 @@ import os
 
 from common.BackendMessage import BackendMessage
 from common.MachineConfig import MachineConfigurator
+from common.Instructions import Instructions
 
 
 def cleanup(filename):
@@ -24,6 +25,7 @@ def cleanup(filename):
 @login_required(login_url='/auth/login')
 def rfq_upload(request):
     try:
+        instructions = Instructions('rfqs', 'upload')
         if request.method == 'POST':
             form = RFQForm(request.POST, request.FILES)
             if form.is_valid():
@@ -53,20 +55,34 @@ def rfq_upload(request):
                 r = requests.post(backend_host + '/auth/rfqs/', json=result)
 
                 backend_message = BackendMessage(json.loads(r.text))
-                print(backend_message)
 
                 cleanup(uploaded_file_url)
 
-                return render(request, 'rfqs/rfq_upload.html', {'form': form, 'error_message': backend_message.getValue()})
+                return render(request, 'rfqs/rfq_upload.html', {'form': form,
+                                                                'error_message': backend_message.getValue()})
         else:
             form = RFQForm()
-        return render(request, 'rfqs/rfq_upload.html', {'form': form})
+        return render(request, 'rfqs/rfq_upload.html', {'form': form,
+                                                        'instructions_title': instructions.getTitle(),
+                                                        'instructions_steps': instructions.getSteps()
+                                                        })
 
-    except Exception as error:
+    except Exception as exception:
         cleanup(uploaded_file_url)
-        return render(request, 'rfqs/rfq_upload.html', {'form': form, 'error_message': "Frontend Error"})
+        print(exception)
+        return render(request, 'rfqs/rfq_upload.html', {'form': form,
+                                                        'error_message': "Frontend Error",
+                                                        'instructions_title': instructions.getTitle(),
+                                                        'instructions_steps': instructions.getSteps()
+                                                        })
 
     except ValueError as exception:
         cleanup(uploaded_file_url)
         print("There is a problem with the backend return value")
-        return render(request, 'rfqs/rfq_upload.html', {'form': form, 'error_message': 'Backend problem'})
+        print(exception)
+        return render(request, 'rfqs/rfq_upload.html', {'form': form,
+                                                        'error_message': 'Backend problem',
+                                                        'instructions_title': instructions.getTitle(),
+                                                        'instructions_steps': instructions.getSteps()
+                                                        })
+

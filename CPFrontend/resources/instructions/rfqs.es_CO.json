@@ -1,0 +1,12 @@
+{
+  "upload" :
+    {
+      "title": "Ingrese los datos de una nueva RFQ:",
+      "steps": {
+        "1": "Antes de comenzar, consulte si los materiales en el RFQ se encuentran en la base de datos. Use las herramientas para ese fin.",
+        "2": "Si los materiales existen en la BD, cree un archivo en Excel en el que debe ir en columnas lo siguiente: COL#1> numero de orden; COL#2> codigo del material; COL#3> cantidad (1.00 - punto decimal); COL#4> unidad (EA, M, M2, M3, KG)",
+        "3": "Exportar esta hoja a un archivo de texto. En Excel esto se hace mediante \"Guardar como\" > \"Texto delimitado por tabulaciones (*.txt)\".",
+        "4": "Llene el formulario y al final seleccione el archivo con el listado de materiales solicitados."
+      }
+    }
+}

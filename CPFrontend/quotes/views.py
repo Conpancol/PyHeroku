@@ -11,6 +11,7 @@ import os
 
 from common.BackendMessage import BackendMessage
 from common.MachineConfig import MachineConfigurator
+from common.Instructions import Instructions
 
 
 def cleanup(filename):
@@ -24,6 +25,7 @@ def cleanup(filename):
 @login_required(login_url='/auth/login')
 def quotes_upload(request):
     try:
+        instructions = Instructions('quotes', 'upload')
         if request.method == 'POST':
             form = QuotesForm(request.POST, request.FILES)
             if form.is_valid():
@@ -60,7 +62,6 @@ def quotes_upload(request):
                 r = requests.post(backend_host + '/auth/quotes/', json=result)
 
                 backend_message = BackendMessage(json.loads(r.text))
-                print(backend_message)
 
                 cleanup(uploaded_file_url)
 
@@ -69,15 +70,26 @@ def quotes_upload(request):
 
         else:
             form = QuotesForm()
-        return render(request, 'quotes/quote_upload.html', {'form': form})
+        return render(request, 'quotes/quote_upload.html', {'form': form,
+                                                            'instructions_title': instructions.getTitle(),
+                                                            'instructions_steps': instructions.getSteps()})
 
-    except Exception as error:
+    except Exception as exception:
         cleanup(uploaded_file_url)
-        print("View")
-        return render(request, 'quotes/quote_upload.html', {'form': form})
+        print(exception)
+        return render(request, 'quotes/quote_upload.html', {'form': form,
+                                                            'error_message': 'General problem',
+                                                            'instructions_title': instructions.getTitle(),
+                                                            'instructions_steps': instructions.getSteps()
+                                                            })
 
     except ValueError as exception:
         cleanup(uploaded_file_url)
         print("There is a problem with the backend return value")
-        return render(request, 'quotes/quote_upload.html', {'form': form, 'error_message': 'Backend problem'})
+        print(exception)
+        return render(request, 'quotes/quote_upload.html', {'form': form,
+                                                            'error_message': 'Backend problem',
+                                                            'instructions_title': instructions.getTitle(),
+                                                            'instructions_steps': instructions.getSteps()
+                                                            })
 

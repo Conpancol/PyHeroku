@@ -6,7 +6,7 @@ types = ['CS',
          'PPL',
          'TITANIUM',
          'HASTELLOY',
-         'STEEL',
+         'CORTEN',
          'ALUMINUM',
          'COPPER',
          'BRONZE',
@@ -18,7 +18,8 @@ types = ['CS',
          'BRICK',
          'CEMENT',
          'MORTAR',
-         'AL203']
+         'AL203',
+         'STEEL']
 
 dimdesc = ['MM', '\"', '/', 'SCH']
 

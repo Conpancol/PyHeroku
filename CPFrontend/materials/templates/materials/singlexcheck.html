@@ -10,27 +10,32 @@
 
 {% endblock %}
 
-
 {% block content %}
 
 <div class="content">
 
-  <h2>CSV file upload to DB</h2>
+  <h2>Materials cross checks</h2>
 
-  <form method="post" enctype="multipart/form-data">
+  <h4>Query for a single material</h4>
+
+   <form action="" method="POST">
     {% csrf_token %}
 
-    {% for hidden in form.hidden_fields %}
+    {% for hidden in xform.hidden_fields %}
         {{ hidden }}
     {% endfor %}
 
-    <div class="form-group">
-      <input class="form-control" type="file" name="myfile">
-    </div>
-
-    <button type="submit" class="btn btn-success">Upload</button>
-
-  </form>
+    {% for field in xform.visible_fields %}
+          <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field |add_class:'form-control'}}
+            {% for error in field.errors %}
+              <span class="help-block">{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% endfor %}
+    <button type="submit" class="btn btn-success">Submit</button>
+   </form>
 
   <div class="content-items">
   {% if uploaded_materials %}
@@ -39,6 +44,7 @@
           <thead>
             <tr>
                 <th scope="col">Itemcode</th>
+                <th scope="col">Description</th>
                 <th scope="col">Status</th>
             </tr>
           </thead>
@@ -46,7 +52,9 @@
             <tr>
             {% for material in uploaded_materials %}
             <tr>
-                <td>{{ material.itemcode }}</td> <td>{{ material.status }}</td>
+                <td>{{ material.itemcode }}</td>
+                <td>{{ material.description }}</td>
+                <td>{{ material.status }}</td>
             </tr>
             {% endfor %}
         </tbody>

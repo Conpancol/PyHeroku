@@ -23,6 +23,8 @@ class MaterialCreator:
                 filename = csvfile.split('/')[-1]
                 logging.info('Opened file: ' + filename)
                 for row in reader:
+                    if row[0] == '':
+                        continue
                     item = row[1]
                     dsc = row[2].rstrip().split(',')
                     cat = dsc[0]
@@ -43,6 +45,26 @@ class MaterialCreator:
 
                     if result == 'NA':
                         logging.info('No dimensions for  \t' + str(material))
+
+            return self.material_list
+
+        except IOError as error:
+            print(error)
+            return self.material_list
+
+    def createMaterial(self, csvfile):
+        try:
+            with open(csvfile, 'r', encoding='utf-8') as f:
+                reader = csv.reader(f, dialect="excel-tab")
+                filename = csvfile.split('/')[ -1 ]
+                logging.info('Opened file: ' + filename)
+                for row in reader:
+                    item = row[0]
+                    material = Material()
+                    material.setItemCode(item)
+
+                    obj_id = material.__dict__
+                    self.material_list.append(obj_id)
 
             return self.material_list
 
