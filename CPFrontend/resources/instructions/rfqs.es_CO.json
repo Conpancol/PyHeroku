@@ -8,5 +8,14 @@
         "3": "Exportar esta hoja a un archivo de texto. En Excel esto se hace mediante \"Guardar como\" > \"Texto delimitado por tabulaciones (*.txt)\".",
         "4": "Llene el formulario y al final seleccione el archivo con el listado de materiales solicitados."
       }
+    },
+  "export" :
+    {
+      "title": "Obtenga una RFQ en formato estandar:",
+      "steps": {
+        "1": "La RFQ debe estar en la base de datos.",
+        "2": "Ingrese el codigo interno de la RFQ y enviar.",
+        "3": "El archivo de vuelta esta en formato CSV que puede editar en Excel."
+      }
     }
 }
