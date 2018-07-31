@@ -3,6 +3,7 @@ from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.http import Http404
+from requests.exceptions import ConnectionError
 
 from .services.RFQCreator import RFQCreator
 from .forms import RFQForm
@@ -70,21 +71,31 @@ def rfq_upload(request):
                                                         'instructions_steps': instructions.getSteps()
                                                         })
 
-    except Exception as exception:
-        cleanup(uploaded_file_url)
-        print(exception)
-        return render(request, 'rfqs/rfq_upload.html', {'form': form,
-                                                        'error_message': "Frontend Error",
-                                                        'instructions_title': instructions.getTitle(),
-                                                        'instructions_steps': instructions.getSteps()
-                                                        })
-
     except ValueError as exception:
         cleanup(uploaded_file_url)
         print("There is a problem with the backend return value")
         print(exception)
         return render(request, 'rfqs/rfq_upload.html', {'form': form,
                                                         'error_message': 'Backend problem',
+                                                        'instructions_title': instructions.getTitle(),
+                                                        'instructions_steps': instructions.getSteps()
+                                                        })
+
+    except ConnectionError as exception:
+        cleanup(uploaded_file_url)
+        print("There is a problem with the backend return value")
+        print(exception)
+        return render(request, 'rfqs/rfq_upload.html', {'form': form,
+                                                        'error_message': 'Backend connection problem',
+                                                        'instructions_title': instructions.getTitle(),
+                                                        'instructions_steps': instructions.getSteps()
+                                                        })
+
+    except Exception as exception:
+        cleanup(uploaded_file_url)
+        print(exception)
+        return render(request, 'rfqs/rfq_upload.html', {'form': form,
+                                                        'error_message': "Frontend Error",
                                                         'instructions_title': instructions.getTitle(),
                                                         'instructions_steps': instructions.getSteps()
                                                         })
@@ -152,6 +163,24 @@ def rfq_export(request):
         print(exception)
         return render(request, 'rfqs/rfq_export.html', {'rfqform': form,
                                                         'error_message': 'Backend problem',
+                                                        'instructions_title': instructions.getTitle(),
+                                                        'instructions_steps': instructions.getSteps()
+                                                        })
+
+    except ConnectionError as exception:
+        print("There is a problem with the backend return value")
+        print(exception)
+        return render(request, 'rfqs/rfq_upload.html', {'form': form,
+                                                        'error_message': 'Backend connection problem',
+                                                        'instructions_title': instructions.getTitle(),
+                                                        'instructions_steps': instructions.getSteps()
+                                                        })
+
+    except Exception as exception:
+        cleanup(uploaded_file_url)
+        print(exception)
+        return render(request, 'rfqs/rfq_upload.html', {'form': form,
+                                                        'error_message': "Frontend Error",
                                                         'instructions_title': instructions.getTitle(),
                                                         'instructions_steps': instructions.getSteps()
                                                         })

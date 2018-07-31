@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.decorators import login_required
+from requests.exceptions import ConnectionError
 
 from .services.QuoteCreator import QuoteCreator
 from .forms import QuotesForm
@@ -74,15 +75,6 @@ def quotes_upload(request):
                                                             'instructions_title': instructions.getTitle(),
                                                             'instructions_steps': instructions.getSteps()})
 
-    except Exception as exception:
-        cleanup(uploaded_file_url)
-        print(exception)
-        return render(request, 'quotes/quote_upload.html', {'form': form,
-                                                            'error_message': 'General problem',
-                                                            'instructions_title': instructions.getTitle(),
-                                                            'instructions_steps': instructions.getSteps()
-                                                            })
-
     except ValueError as exception:
         cleanup(uploaded_file_url)
         print("There is a problem with the backend return value")
@@ -93,3 +85,21 @@ def quotes_upload(request):
                                                             'instructions_steps': instructions.getSteps()
                                                             })
 
+    except ConnectionError as exception:
+        cleanup(uploaded_file_url)
+        print("Backend connection problem")
+        print(exception)
+        return render(request, 'rfqs/rfq_upload.html', {'form': form,
+                                                        'error_message': 'Backend connection problem',
+                                                        'instructions_title': instructions.getTitle(),
+                                                        'instructions_steps': instructions.getSteps()
+                                                        })
+
+    except Exception as exception:
+        cleanup(uploaded_file_url)
+        print(exception)
+        return render(request, 'quotes/quote_upload.html', {'form': form,
+                                                            'error_message': 'General problem',
+                                                            'instructions_title': instructions.getTitle(),
+                                                            'instructions_steps': instructions.getSteps()
+                                                            })

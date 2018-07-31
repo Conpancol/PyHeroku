@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 from django.utils.datastructures import MultiValueDictKeyError
 from django.contrib.auth.decorators import login_required
+from requests.exceptions import ConnectionError
 
 from .services.MaterialCreator import MaterialCreator
 
@@ -77,6 +78,15 @@ def simple_upload(request):
                                                                 'instructions_steps': instructions.getSteps()
                                                                 })
 
+    except ConnectionError as exception:
+        cleanup(uploaded_file_url)
+        print("Backend connection problem")
+        print(exception)
+        return render(request, 'rfqs/rfq_upload.html', {'error_message': 'Backend connection problem',
+                                                        'instructions_title': instructions.getTitle(),
+                                                        'instructions_steps': instructions.getSteps()
+                                                        })
+
     except Exception as exception:
         print(exception)
         cleanup(uploaded_file_url)
@@ -119,6 +129,14 @@ def singlexcheck(request):
                                                                'instructions_title': instructions.getTitle(),
                                                                'instructions_steps': instructions.getSteps()
                                                                })
+
+    except ConnectionError as exception:
+        print("Backend connection problem")
+        print(exception)
+        return render(request, 'rfqs/rfq_upload.html', {'error_message': 'Backend connection problem',
+                                                        'instructions_title': instructions.getTitle(),
+                                                        'instructions_steps': instructions.getSteps()
+                                                        })
 
     except Exception as exception:
         print(exception)
@@ -177,6 +195,15 @@ def multiplexcheck(request):
                                                                  'instructions_title': instructions.getTitle(),
                                                                  'instructions_steps': instructions.getSteps()
                                                                  })
+
+    except ConnectionError as exception:
+        cleanup(uploaded_file_url)
+        print("Backend connection problem")
+        print(exception)
+        return render(request, 'rfqs/rfq_upload.html', {'error_message': 'Backend connection problem',
+                                                        'instructions_title': instructions.getTitle(),
+                                                        'instructions_steps': instructions.getSteps()
+                                                        })
 
     except Exception as exception:
         print(exception)
