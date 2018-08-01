@@ -152,3 +152,36 @@ class RFQCreator:
             print(dim_values, total_area, nplates)
 
         return nplates
+
+    def findQuotesFromCSV(self, csvfile):
+        try:
+            with open(csvfile, 'r', encoding='utf-8') as f:
+                reader = csv.reader(f, dialect="excel-tab")
+                extmaterials = []
+                for row in reader:
+                    try:
+                        orderNum = row[0]
+                        itemCode = row[1]
+                        quantity = float(row[2])
+                        unit = row[3]
+                        material = Material()
+                        material.setItemCode(itemCode)
+                        extendedMaterial = ExtMaterials(material)
+                        extendedMaterial.setOrderNumber(orderNum)
+                        extendedMaterial.setUnit(unit)
+                        extendedMaterial.setQuantity(quantity)
+                        extmaterials.append(extendedMaterial)
+
+                    except ValueError:
+                        logging.info('There is a wrong data format entry. Please check')
+                        continue
+
+                self.rfq.setMaterialList(extmaterials)
+
+            rfq_json = self.rfq.__dict__
+            rfq_json['materialList'] = self.rfq.to_json()
+
+            return rfq_json['materialList']
+
+        except IOError as error:
+            print(error)

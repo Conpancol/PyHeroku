@@ -10,14 +10,15 @@
 
 {% endblock %}
 
-
 {% block content %}
 
 <div class="content">
 
-  <h2>CSV file upload to DB</h2>
+  <h2>RFQ-Quote finder</h2>
 
-  <form method="post" enctype="multipart/form-data">
+  <h4>Query for existing material quotes in the current RFQ</h4>
+
+    <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
 
     {% for hidden in form.hidden_fields %}
@@ -33,20 +34,22 @@
   </form>
 
   <div class="content-items">
-  {% if uploaded_materials %}
+  {% if quoted_materials %}
 
       <table class="table table-dark">
           <thead>
             <tr>
                 <th scope="col">Itemcode</th>
-                <th scope="col">Status</th>
+                <th scope="col">Project</th>
+                <th scope="col">Unit Price</th>
+                <th scope="col">Unit</th>
             </tr>
           </thead>
         <tbody>
             <tr>
-            {% for material in uploaded_materials %}
+            {% for material in quoted_materials %}
             <tr>
-                <td>{{ material.itemcode }}</td> <td>{{ material.status }}</td>
+                <td>{{ material.itemcode }}</td> <td>{{ material.project }}</td> <td>{{ material.price }}</td> <td>{{ material.unit }}</td>
             </tr>
             {% endfor %}
         </tbody>

@@ -17,5 +17,13 @@
         "2": "Ingrese el codigo interno de la RFQ y enviar.",
         "3": "El archivo de vuelta esta en formato CSV que puede editar en Excel."
       }
+    },
+  "qfinder" :
+    {
+      "title": "Obtenga una lista de comprobacion para concer si algun material ha sido cotizado o no anteriormente:",
+      "steps": {
+        "1": "Los materiales ya deben estar en la base de datos.",
+        "2": "Descarge el archivo en formato CSV que contiene la RFQ en que desea consultar."
+      }
     }
 }

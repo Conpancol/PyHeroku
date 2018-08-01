@@ -184,3 +184,63 @@ def rfq_export(request):
                                                         'instructions_title': instructions.getTitle(),
                                                         'instructions_steps': instructions.getSteps()
                                                         })
+
+
+@login_required(login_url='/auth/login')
+def rfq_qfinder(request):
+    uploaded_file_url = ''
+    instructions = Instructions('rfqs', 'qfinder')
+    try:
+        if request.method == 'POST' and request.FILES['myfile']:
+            myfile = request.FILES['myfile']
+            fs = FileSystemStorage()
+            filename = fs.save(myfile.name, myfile)
+            uploaded_file_url = fs.url(filename)
+
+            rfq = RFQCreator()
+            result = rfq.findQuotesFromCSV('.' + uploaded_file_url)
+
+            # ... print(json.dumps(result))
+
+            backend_host = MachineConfigurator().getBackend()
+            r = requests.post(backend_host + '/auth/rfqs/quotes', json=result)
+
+            backend_message = BackendMessage(json.loads(r.text))
+
+            if not backend_message.getErrorInd():
+
+                quoted_materials = json.loads(backend_message.getValue())
+                cleanup(uploaded_file_url)
+
+                return render(request, 'rfqs/rfq_qfinder.html', {'quoted_materials': quoted_materials,
+                                                                 'instructions_title': instructions.getTitle(),
+                                                                 'instructions_steps': instructions.getSteps()
+                                                                 })
+            else:
+                print(backend_message.getValue())
+                return render(request, 'rfqs/rfq_qfinder.html', {'error_message': backend_message.getValue(),
+                                                                 'instructions_title': instructions.getTitle(),
+                                                                 'instructions_steps': instructions.getSteps()
+                                                                 })
+
+            cleanup(uploaded_file_url)
+
+        return render(request, 'rfqs/rfq_qfinder.html', {'instructions_title': instructions.getTitle(),
+                                                         'instructions_steps': instructions.getSteps()
+                                                         })
+
+    except ConnectionError as exception:
+        print("There is a problem with the backend return value")
+        print(exception)
+        return render(request, 'rfqs/rfq_qfinder.html', {'error_message': 'Backend connection problem',
+                                                         'instructions_title': instructions.getTitle(),
+                                                         'instructions_steps': instructions.getSteps()
+                                                         })
+
+    except Exception as exception:
+        cleanup(uploaded_file_url)
+        print(exception)
+        return render(request, 'rfqs/rfq_qfinder.html', {'error_message': "Frontend Error",
+                                                         'instructions_title': instructions.getTitle(),
+                                                         'instructions_steps': instructions.getSteps()
+                                                         })
