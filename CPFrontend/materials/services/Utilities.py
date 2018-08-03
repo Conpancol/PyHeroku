@@ -1,4 +1,6 @@
 import re
+import csv
+
 
 types = ['CS',
          'SS',
@@ -43,3 +45,22 @@ def find_dimensions(description):
         return ','.join(dimensions).strip()
     else:
         return 'NA'
+
+
+def fileFilter(csvfile):
+    try:
+        with open(csvfile, 'r', encoding='utf-8') as f:
+            reader = csv.reader(f, dialect="excel-tab")
+            for row in reader:
+                print(row)
+
+    except UnicodeDecodeError as exception:
+        print(exception)
+        input_file = open(csvfile, "rb")
+        s = input_file.read()
+        input_file.close()
+        s = s.replace(b'\xb0', bytes(b'\xc2\xb0'))
+        output_file = open(csvfile, "wb")
+        output_file.write(s)
+        output_file.close()
+        print('input file corrected')

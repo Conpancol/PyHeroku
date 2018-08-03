@@ -68,6 +68,14 @@ def simple_upload(request):
                                                                     'instructions_title': instructions.getTitle(),
                                                                     'instructions_steps': instructions.getSteps()
                                                                     })
+    except UnicodeDecodeError as exception:
+        print("There is a problem with the input file - unicode decoding error")
+        print(exception)
+        cleanup(uploaded_file_url)
+        return render(request, 'materials/simple_upload.html', {'error_message': 'Cannot read file correctly',
+                                                                'instructions_title': instructions.getTitle(),
+                                                                'instructions_steps': instructions.getSteps()
+                                                                })
 
     except ValueError as exception:
         print("There is a problem with the backend return value")

@@ -1,4 +1,3 @@
-import csv
 import logging
 
 from .Utilities import *
@@ -18,6 +17,7 @@ class MaterialCreator:
 
     def createMaterialfromCSV(self, csvfile):
         try:
+            fileFilter(csvfile)
             with open(csvfile, 'r', encoding='utf-8') as f:
                 reader = csv.reader(f, dialect="excel-tab")
                 filename = csvfile.split('/')[-1]
