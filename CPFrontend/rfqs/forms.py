@@ -2,6 +2,7 @@ from django import forms
 from .models import RFQ
 from .choices import *
 
+
 class RFQForm(forms.ModelForm):
     class Meta:
         model = RFQ

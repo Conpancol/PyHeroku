@@ -103,6 +103,7 @@ def rfq_upload(request):
 
 @login_required(login_url='/auth/login')
 def rfq_export(request):
+    output_file = ''
     instructions = Instructions('rfqs', 'export')
     try:
         if request.method == 'POST':
@@ -126,8 +127,6 @@ def rfq_export(request):
                     rfq = json.loads(backend_message.getValue())
                     rfq_service = RFQCreator()
                     output_file = rfq_service.exportRFQtoCSV(rfq, incoterms, port)
-
-                    print(output_file)
 
                     if os.path.exists(output_file):
                         with open(output_file, 'rb') as fh:
@@ -177,7 +176,7 @@ def rfq_export(request):
                                                         })
 
     except Exception as exception:
-        cleanup(uploaded_file_url)
+        cleanup(output_file)
         print(exception)
         return render(request, 'rfqs/rfq_upload.html', {'form': form,
                                                         'error_message': "Frontend Error",

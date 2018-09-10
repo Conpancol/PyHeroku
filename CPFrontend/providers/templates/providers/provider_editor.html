@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% load static %}
+
+{% block menu %}
+
+{% include "navbar.html" %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="content">
+
+  <h2>Edit the selected provider</h2>
+
+    {% if provider_form %}
+
+    <form action="" method="POST">
+    {% csrf_token %}
+
+    {% for hidden in provider_form.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+
+    {% for field in provider_form.visible_fields %}
+          <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field |add_class:'form-control'}}
+            {% for error in field.errors %}
+              <span class="help-block">{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% endfor %}
+
+    <button type="submit" class="btn btn-success">Submit</button>
+
+    </form>
+
+    {% endif %}
+
+   <div class="content-items">
+      {% if updated_providers %}
+
+      <table class="table table-dark">
+          <thead>
+            <tr>
+                <th scope="col">Code</th>
+                <th scope="col">Name</th>
+                <th scope="col">Status</th>
+            </tr>
+          </thead>
+        <tbody>
+            <tr>
+            {% for provider in updated_providers %}
+            <tr>
+                <td>{{ provider.providerId }}</td> <td>{{ provider.name }}</td> <td>{{ provider.status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+  {% endif %}
+
+   </div>
+
+      {% if error_message %}
+          <p> {{ error_message }} </p>
+      {% endif %}
+
+      {% block instructions %}
+        {% include "instructions.html" %}
+      {% endblock %}
+
+</div>
+
+{% endblock %}

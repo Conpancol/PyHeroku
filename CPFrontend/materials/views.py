@@ -90,10 +90,10 @@ def simple_upload(request):
         cleanup(uploaded_file_url)
         print("Backend connection problem")
         print(exception)
-        return render(request, 'rfqs/rfq_upload.html', {'error_message': 'Backend connection problem',
-                                                        'instructions_title': instructions.getTitle(),
-                                                        'instructions_steps': instructions.getSteps()
-                                                        })
+        return render(request, 'materials/simple_upload.html', {'error_message': 'Backend connection problem',
+                                                                'instructions_title': instructions.getTitle(),
+                                                                'instructions_steps': instructions.getSteps()
+                                                                })
 
     except Exception as exception:
         print(exception)
@@ -141,10 +141,10 @@ def singlexcheck(request):
     except ConnectionError as exception:
         print("Backend connection problem")
         print(exception)
-        return render(request, 'rfqs/rfq_upload.html', {'error_message': 'Backend connection problem',
-                                                        'instructions_title': instructions.getTitle(),
-                                                        'instructions_steps': instructions.getSteps()
-                                                        })
+        return render(request, 'materials/singlexcheck.html', {'error_message': 'Backend connection problem',
+                                                               'instructions_title': instructions.getTitle(),
+                                                               'instructions_steps': instructions.getSteps()
+                                                               })
 
     except Exception as exception:
         print(exception)
@@ -208,10 +208,10 @@ def multiplexcheck(request):
         cleanup(uploaded_file_url)
         print("Backend connection problem")
         print(exception)
-        return render(request, 'rfqs/rfq_upload.html', {'error_message': 'Backend connection problem',
-                                                        'instructions_title': instructions.getTitle(),
-                                                        'instructions_steps': instructions.getSteps()
-                                                        })
+        return render(request, 'materials/multiplexcheck.html', {'error_message': 'Backend connection problem',
+                                                                 'instructions_title': instructions.getTitle(),
+                                                                 'instructions_steps': instructions.getSteps()
+                                                                 })
 
     except Exception as exception:
         print(exception)

@@ -1,6 +1,7 @@
 import csv
 import datetime
 import logging
+import re
 
 from .RequestForQuotes import *
 
@@ -74,10 +75,12 @@ class RFQCreator:
         labels.append('Quantity')
         labels.append('Unit')
 
+        internal_code = str(rfq[ "internalCode" ])
+        csvfile = 'RFQ-' + internal_code + '_Conpancol.csv'
+        path = "media/export/" + csvfile
+
         try:
-            internal_code = str(rfq["internalCode"])
-            csvfile = 'RFQ-' + internal_code + '_Conpancol.csv'
-            path = "media/export/" + csvfile
+
             with open(path, 'w', encoding='utf-8', newline='') as f:
                 writer = csv.writer(f, dialect="excel", delimiter=';')
                 header = 'RFQ internal code: ' + str(rfq["internalCode"])
@@ -115,7 +118,7 @@ class RFQCreator:
                     writer.writerow(rwo)
                     id += 1
 
-                for i in range(1,3):
+                for i in range(1, 3):
                     writer.writerow([' '])
                 bottom_txt_file = open('./resources/inputs/Bottom_conditions_EN.txt', 'r')
                 bottom_txt_rows = bottom_txt_file.readlines()
@@ -133,24 +136,32 @@ class RFQCreator:
 
         except IOError:
             logging.info('Problem with file creation')
-            return ''
+            return path
+
+        except Exception:
+            logging.info('General exception')
+            return path
 
     def getNumberPlates(self, dimensions, total_area):
+        nplates = 0.0
+        all_dims = dimensions.split(',')
 
-        if dimensions.find("MM"):
-            dim_values = []
-            dims = dimensions.split(',')[1].split('X')
-            for dd in dims:
+        for dm in all_dims:
+            if re.search('MM', dm):
+                dim_values = []
+                dims = dm.split('X')
+                if len(dims) == 3:
+                    for dd in dims:
+                        try:
+                            dim_values.append(float(dd.replace(' ', '').replace('MM', '')))
+                        except ValueError:
+                            dim_values.append(0.0)
+                            logging.info('Got a Value conversion exception, please check')
+                            logging.info(dd.replace(' ', '').replace('MM', ''))
 
-                try:
-                    dim_values.append(float( dd.replace(' ','').replace('MM','')))
-                except ValueError:
-                    dim_values.append(0.0)
-
-            area = dim_values[0] * dim_values[1] * 0.000001
-            nplates = format(total_area / area, '.2f')
-            print(dim_values, total_area, nplates)
-
+                    area = dim_values[0] * dim_values[1] * 0.000001
+                    nplates = format(total_area / area, '.2f')
+                    print(dim_values, total_area, nplates)
         return nplates
 
     def findQuotesFromCSV(self, csvfile):

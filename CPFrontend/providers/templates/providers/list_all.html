@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% load static %}
+
+{% block menu %}
+
+{% include "navbar.html" %}
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="content">
+
+  <h2>Providers in DB</h2>
+
+  <div class="content-items">
+  {% if contacts %}
+
+      <table class="table table-dark">
+          <thead>
+            <tr>
+                <th scope="col">Code</th>
+                <th scope="col">Name</th>
+                <th scope="col">Category</th>
+            </tr>
+          </thead>
+        <tbody>
+            <tr>
+            {% for provider in contacts %}
+            <tr>
+                <td>{{ provider.providerId }}</td> <td>{{ provider.name }}</td> <td>{{ provider.category }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+
+      <div class="pagination">
+
+          <span class="step-links">
+            {% if contacts.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ contacts.previous_page_number }}">previous</a>
+            {% endif %}
+            <span class="current">
+                Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
+            </span>
+            {% if contacts.has_next %}
+                <a href="?page={{ contacts.next_page_number }}">next</a>
+                <a href="?page={{ contacts.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+            </span>
+      </div>
+  {% endif %}
+  </div>
+
+  {% if error_message %}
+      <p> {{ error_message }} </p>
+  {% endif %}
+
+  {% block instructions %}
+    {% include "instructions.html" %}
+  {% endblock %}
+
+</div>
+
+{% endblock %}

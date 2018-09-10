@@ -1,6 +1,6 @@
 INCOTERMS_CHOICES = (
-    (1, "EXW"),
-    (2, "FOB"),
-    (3, "CFR"),
-    (4, "CIF"),
+    (1, "FOB"),
+    (2, "CFR"),
+    (3, "CIF"),
+    (4, "EXW"),
 )

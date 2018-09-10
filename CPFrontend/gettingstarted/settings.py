@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'materials.apps.MaterialsConfig',
     'rfqs.apps.RfqsConfig',
     'quotes.apps.QuotesConfig',
+    'providers.apps.ProvidersConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
