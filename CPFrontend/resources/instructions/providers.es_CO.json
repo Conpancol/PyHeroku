@@ -25,9 +25,9 @@
     },
   "manage" :
     {
-      "title": "Gestion de proveedores",
+      "title": "Gestión de proveedores",
       "steps": {
-        "1": "Editar informacion del proveedor especificado",
+        "1": "Editar información del proveedor especificado",
         "2": "Adicionar comentario al proveedor especificado",
         "3": "Eliminar el proveedor especificado de la base de datos"
       }
@@ -36,7 +36,7 @@
     {
       "title": "Edita las entradas de un proveedor en la DB",
       "steps": {
-        "1": "Llenar el formulario con la informacion necesaria",
+        "1": "Llenar el formulario con la información necesaria",
         "2": "Enviar"
       }
     },
@@ -44,7 +44,7 @@
     {
       "title": "Adicionar un comentario al proveedor seleccionado",
       "steps": {
-        "1": "Llenar el formulario con la informacion necesaria",
+        "1": "Llenar el formulario con la información necesaria",
         "2": "Enviar"
       }
     }

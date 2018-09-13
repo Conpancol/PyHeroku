@@ -207,7 +207,6 @@ def provider_creator(request):
 @login_required(login_url='/auth/login')
 def provider_manager(request):
     instructions = Instructions('providers', 'manage')
-
     try:
         if request.method == 'POST':
             selector_form = SelectorForm(request.POST)
@@ -254,7 +253,6 @@ def provider_manager(request):
 @login_required(login_url='/auth/login')
 def provider_editor(request, code):
     instructions = Instructions('providers', 'edit')
-
     try:
 
         backend_host = MachineConfigurator().getBackend()

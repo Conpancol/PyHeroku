@@ -8,3 +8,4 @@ ACTION_CHOICES = (
     (2, "Add comment"),
 )
 
+#... country list extracted from file

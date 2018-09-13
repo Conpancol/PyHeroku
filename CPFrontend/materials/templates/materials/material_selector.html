@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% load static %}
+
+{% block menu %}
+
+{% include "navbar.html" %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="content">
+
+  <h2>Select a material to modify</h2>
+
+  <form action="" method="POST">
+    {% csrf_token %}
+
+    {% for hidden in selector_form.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+
+    {% for field in selector_form.visible_fields %}
+          <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field |add_class:'form-control'}}
+            {% for error in field.errors %}
+              <span class="help-block">{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% endfor %}
+    <button type="submit" class="btn btn-success">Submit</button>
+   </form>
+
+   <div class="content-items">
+   </div>
+
+  {% if error_message %}
+      <p> {{ error_message }} </p>
+  {% endif %}
+
+  {% block instructions %}
+    {% include "instructions.html" %}
+  {% endblock %}
+
+</div>
+
+{% endblock %}

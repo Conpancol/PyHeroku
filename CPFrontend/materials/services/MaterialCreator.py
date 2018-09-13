@@ -72,3 +72,28 @@ class MaterialCreator:
             print(error)
             return self.material_list
 
+
+    def editMaterial(self, form):
+        try:
+            itemcode = form.cleaned_data['itemcode']
+            description = form.cleaned_data['description']
+            type = form.cleaned_data['type']
+            category = form.cleaned_data['category']
+            dimensions = form.cleaned_data['dimensions']
+
+            material = Material()
+            material.setItemCode(itemcode)
+            material.setDescription(description)
+            material.setType(type)
+            material.setCategory(category)
+            material.setDimensions(dimensions)
+
+            obj_id = material.__dict__
+            self.material_list.append(obj_id)
+
+            return self.material_list
+
+        except IOError as error:
+            print(error)
+            return self.material_list
+
