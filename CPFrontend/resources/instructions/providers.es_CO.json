@@ -1,7 +1,10 @@
 {
   "upload" :
     {
-      "title": "Si el proveedor o proveedores no están en la base de datos, proceder de esta forma:",
+      "title": {
+        "label": "Instrucciones",
+        "text": "Si el proveedor o proveedores no están en la base de datos, proceder de esta forma:"
+      },
       "steps": {
         "1": "Digitalizar los datos del proveedor. Usar Excel.",
         "2": "Exportar esta hoja a un archivo de texto. En Excel esto se hace mediante \"Guardar como\" > \"Texto delimitado por tabulaciones (*.txt)\".",
@@ -10,14 +13,20 @@
     },
   "listall" :
     {
-      "title": "Lista completa de todos los proveedores que se encuentran en la BD:",
+      "title": {
+        "label": "Instrucciones",
+        "text" : "Lista completa de todos los proveedores que se encuentran en la BD:"
+      },
       "steps": {
         "1": "Hacer click en Enviar"
       }
     },
   "create" :
     {
-      "title": "Crea una entrada para un proveedor en la DB",
+      "title": {
+        "label": "Instrucciones",
+        "text": "Crea una entrada para un proveedor en la DB"
+      },
       "steps": {
         "1": "Llenar el formulario con la informacion necesaria",
         "2": "Enviar"
@@ -25,7 +34,10 @@
     },
   "manage" :
     {
-      "title": "Gestión de proveedores",
+      "title": {
+        "label": "Instrucciones",
+        "text": "Gestión de proveedores"
+      },
       "steps": {
         "1": "Editar información del proveedor especificado",
         "2": "Adicionar comentario al proveedor especificado",
@@ -34,7 +46,10 @@
     },
   "edit" :
     {
-      "title": "Edita las entradas de un proveedor en la DB",
+      "title": {
+        "label": "Instrucciones",
+        "text": "Edita las entradas de un proveedor en la DB"
+      },
       "steps": {
         "1": "Llenar el formulario con la información necesaria",
         "2": "Enviar"
@@ -42,7 +57,10 @@
     },
   "comment" :
     {
-      "title": "Adicionar un comentario al proveedor seleccionado",
+      "title": {
+        "label" : "Instrucciones",
+        "text" : "Adicionar un comentario al proveedor seleccionado"
+      },
       "steps": {
         "1": "Llenar el formulario con la información necesaria",
         "2": "Enviar"

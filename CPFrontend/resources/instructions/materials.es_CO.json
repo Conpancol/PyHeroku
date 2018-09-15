@@ -1,7 +1,10 @@
 {
   "upload" :
     {
-      "title": "Si el material o materiales no están en la base de datos, proceder de esta forma:",
+      "title": {
+        "label": "Instrucciones",
+        "text": "Si el material o materiales no están en la base de datos, proceder de esta forma:"
+      },
       "steps": {
         "1": "Digitalizar los datos del requerimiento. Usar Excel.",
         "2": "Una vez terminado el paso anterior, organizar en una hoja aparte las siguientes columnas: COL1 > Un consecutivo o contador (ejemplo: 1,2,3,...), COL2 > el id del material (ejemplo: 1234567890), COL3 > la descripción del material.",
@@ -11,7 +14,10 @@
     },
   "singlexcheck" :
     {
-      "title": "Esta herramienta le permite consultar si un material se encuentra o no en la base de datos:",
+      "title": {
+        "label": "Instrucciones",
+        "text" : "Esta herramienta le permite consultar si un material se encuentra o no en la base de datos:"
+      },
       "steps": {
         "1": "Simplemente ingrese el codigo del material y ejecute \"Submit\"",
         "2": "La consulta genera una tabla en la que se indicara el estado de este material",
@@ -21,7 +27,10 @@
     },
   "multiplexcheck" :
     {
-      "title": "Esta herramienta le permite consultar cuales materiales se encuentran o no en la base de datos:",
+      "title": {
+        "label": "Instrucciones",
+        "text" : "Esta herramienta le permite consultar cuales materiales se encuentran o no en la base de datos:"
+      },
       "steps": {
         "1": "Si tiene varios items por consultar, genere una lista de los codigos del material en un archivo de texto, colocando en una sola columna los codigos.",
         "2": "Seleccione este archivo y ejecute \"Submit\"",
@@ -31,16 +40,33 @@
     },
   "manage" :
     {
-      "title": "Gestión de materiales",
+      "title": {
+        "label": "Instrucciones",
+        "text" : "Gestión de materiales"
+      },
       "steps": {
         "1": "Editar información del material especificado"
       }
     },
   "edit" :
     {
-      "title": "Edita las entradas de un material en la DB",
+      "title": {
+        "label": "Instrucciones",
+        "text" : "Edita las entradas de un material en la DB"
+      },
       "steps": {
         "1": "Llenar el formulario con la información necesaria",
+        "2": "Enviar"
+      }
+    },
+  "weightcalc" :
+    {
+      "title": {
+        "label": "Instrucciones",
+        "text" : "Calcula el peso del material seleccionado"
+      },
+      "steps": {
+        "1": "Ingresar la cantidad requerida y la unidad (opciones solo en sistema metrico)",
         "2": "Enviar"
       }
     }

@@ -13,10 +13,16 @@ import os
 from common.BackendMessage import BackendMessage
 from common.MachineConfig import MachineConfigurator
 from common.Instructions import Instructions
+from common.FrontendTexts import FrontendTexts
 
 from .forms import xcheckForm
 from .forms import SelectorForm
 from .forms import MaterialForm
+from .forms import WeightCalculatorForm
+from .choices import *
+
+
+view_texts = FrontendTexts('materials')
 
 
 def cleanup(filename):
@@ -29,8 +35,9 @@ def cleanup(filename):
 
 @login_required(login_url='/auth/login')
 def simple_upload(request):
-    uploaded_file_url = ''
+    menu_texts = FrontendTexts('menu')
     instructions = Instructions('materials', 'upload')
+    uploaded_file_url = ''
     try:
         if request.method == 'POST' and request.FILES['myfile']:
 
@@ -58,15 +65,20 @@ def simple_upload(request):
             cleanup(uploaded_file_url)
 
             return render(request, 'materials/simple_upload.html', {
+                'menu_text': menu_texts.getComponent(),
                 'uploaded_materials': backend_result})
 
-        return render(request, 'materials/simple_upload.html', {'instructions_title': instructions.getTitle(),
+        return render(request, 'materials/simple_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                                'view_texts': view_texts.getComponent(),
+                                                                'instructions_title': instructions.getTitle(),
                                                                 'instructions_steps': instructions.getSteps()})
 
     except MultiValueDictKeyError as exception:
             print("No file selected")
             print(exception)
-            return render(request, 'materials/simple_upload.html', {'error_message': 'No file selected',
+            return render(request, 'materials/simple_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                                    'view_texts': view_texts.getComponent(),
+                                                                    'error_message': 'No file selected',
                                                                     'instructions_title': instructions.getTitle(),
                                                                     'instructions_steps': instructions.getSteps()
                                                                     })
@@ -74,7 +86,9 @@ def simple_upload(request):
         print("There is a problem with the input file - unicode decoding error")
         print(exception)
         cleanup(uploaded_file_url)
-        return render(request, 'materials/simple_upload.html', {'error_message': 'Cannot read file correctly',
+        return render(request, 'materials/simple_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                                'view_texts': view_texts.getComponent(),
+                                                                'error_message': 'Cannot read file correctly',
                                                                 'instructions_title': instructions.getTitle(),
                                                                 'instructions_steps': instructions.getSteps()
                                                                 })
@@ -83,7 +97,9 @@ def simple_upload(request):
         print("There is a problem with the backend return value")
         print(exception)
         cleanup(uploaded_file_url)
-        return render(request, 'materials/simple_upload.html', {'error_message': 'Backend problem',
+        return render(request, 'materials/simple_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                                'view_texts': view_texts.getComponent(),
+                                                                'error_message': 'Backend problem',
                                                                 'instructions_title': instructions.getTitle(),
                                                                 'instructions_steps': instructions.getSteps()
                                                                 })
@@ -92,7 +108,9 @@ def simple_upload(request):
         cleanup(uploaded_file_url)
         print("Backend connection problem")
         print(exception)
-        return render(request, 'materials/simple_upload.html', {'error_message': 'Backend connection problem',
+        return render(request, 'materials/simple_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                                'view_texts': view_texts.getComponent(),
+                                                                'error_message': 'Backend connection problem',
                                                                 'instructions_title': instructions.getTitle(),
                                                                 'instructions_steps': instructions.getSteps()
                                                                 })
@@ -100,7 +118,9 @@ def simple_upload(request):
     except Exception as exception:
         print(exception)
         cleanup(uploaded_file_url)
-        return render(request, 'materials/simple_upload.html', {'error_message': 'System error',
+        return render(request, 'materials/simple_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                                'view_texts': view_texts.getComponent(),
+                                                                'error_message': 'System error',
                                                                 'instructions_title': instructions.getTitle(),
                                                                 'instructions_steps': instructions.getSteps()
                                                                 })
@@ -108,6 +128,7 @@ def simple_upload(request):
 
 @login_required(login_url='/auth/login')
 def singlexcheck(request):
+    menu_texts = FrontendTexts('menu')
     instructions = Instructions('materials', 'singlexcheck')
     try:
         if request.method == 'POST':
@@ -123,20 +144,26 @@ def singlexcheck(request):
                 backend_message = BackendMessage(json.loads(r.text))
                 backend_result = json.loads(backend_message.getValue())
 
-                return render(request, 'materials/singlexcheck.html', {'xform': form,
+                return render(request, 'materials/singlexcheck.html', {'menu_text': menu_texts.getComponent(),
+                                                                       'view_texts': view_texts.getComponent(),
+                                                                       'xform': form,
                                                                        'uploaded_materials': backend_result})
 
         else:
             form = xcheckForm()
 
-        return render(request, 'materials/singlexcheck.html', {'xform': form,
+        return render(request, 'materials/singlexcheck.html', {'menu_text': menu_texts.getComponent(),
+                                                               'view_texts': view_texts.getComponent(),
+                                                               'xform': form,
                                                                'instructions_title': instructions.getTitle(),
                                                                'instructions_steps': instructions.getSteps()})
 
     except ValueError as exception:
         print("There is a problem with the backend return value")
         print(exception)
-        return render(request, 'materials/singlexcheck.html', {'error_message': 'Backend problem',
+        return render(request, 'materials/singlexcheck.html', {'menu_text': menu_texts.getComponent(),
+                                                               'view_texts': view_texts.getComponent(),
+                                                               'error_message': 'Backend problem',
                                                                'instructions_title': instructions.getTitle(),
                                                                'instructions_steps': instructions.getSteps()
                                                                })
@@ -144,14 +171,18 @@ def singlexcheck(request):
     except ConnectionError as exception:
         print("Backend connection problem")
         print(exception)
-        return render(request, 'materials/singlexcheck.html', {'error_message': 'Backend connection problem',
+        return render(request, 'materials/singlexcheck.html', {'menu_text': menu_texts.getComponent(),
+                                                               'view_texts': view_texts.getComponent(),
+                                                               'error_message': 'Backend connection problem',
                                                                'instructions_title': instructions.getTitle(),
                                                                'instructions_steps': instructions.getSteps()
                                                                })
 
     except Exception as exception:
         print(exception)
-        return render(request, 'materials/singlexcheck.html', {'error_message': 'System error',
+        return render(request, 'materials/singlexcheck.html', {'menu_text': menu_texts.getComponent(),
+                                                               'view_texts': view_texts.getComponent(),
+                                                               'error_message': 'System error',
                                                                'instructions_title': instructions.getTitle(),
                                                                'instructions_steps': instructions.getSteps()
                                                                })
@@ -159,8 +190,9 @@ def singlexcheck(request):
 
 @login_required(login_url='/auth/login')
 def multiplexcheck(request):
-    uploaded_file_url = ''
+    menu_texts = FrontendTexts('menu')
     instructions = Instructions('materials', 'multiplexcheck')
+    uploaded_file_url = ''
     try:
         if request.method == 'POST' and request.FILES['myfile']:
 
@@ -185,15 +217,21 @@ def multiplexcheck(request):
 
             cleanup(uploaded_file_url)
 
-            return render(request, 'materials/multiplexcheck.html', {'uploaded_materials': backend_result})
+            return render(request, 'materials/multiplexcheck.html', {'menu_text': menu_texts.getComponent(),
+                                                                     'view_texts': view_texts.getComponent(),
+                                                                     'uploaded_materials': backend_result})
 
-        return render(request, 'materials/multiplexcheck.html', {'instructions_title': instructions.getTitle(),
+        return render(request, 'materials/multiplexcheck.html', {'menu_text': menu_texts.getComponent(),
+                                                                 'view_texts': view_texts.getComponent(),
+                                                                 'instructions_title': instructions.getTitle(),
                                                                  'instructions_steps': instructions.getSteps()})
 
     except MultiValueDictKeyError as exception:
             print("No file selected")
             print(exception)
-            return render(request, 'materials/multiplexcheck.html', {'error_message': 'No file selected',
+            return render(request, 'materials/multiplexcheck.html', {'menu_text': menu_texts.getComponent(),
+                                                                     'view_texts': view_texts.getComponent(),
+                                                                     'error_message': 'No file selected',
                                                                      'instructions_title': instructions.getTitle(),
                                                                      'instructions_steps': instructions.getSteps()
                                                                      })
@@ -202,7 +240,9 @@ def multiplexcheck(request):
         print("There is a problem with the backend return value")
         print(exception)
         cleanup(uploaded_file_url)
-        return render(request, 'materials/multiplexcheck.html', {'error_message': 'Backend problem',
+        return render(request, 'materials/multiplexcheck.html', {'menu_text': menu_texts.getComponent(),
+                                                                 'view_texts': view_texts.getComponent(),
+                                                                 'error_message': 'Backend problem',
                                                                  'instructions_title': instructions.getTitle(),
                                                                  'instructions_steps': instructions.getSteps()
                                                                  })
@@ -211,7 +251,9 @@ def multiplexcheck(request):
         cleanup(uploaded_file_url)
         print("Backend connection problem")
         print(exception)
-        return render(request, 'materials/multiplexcheck.html', {'error_message': 'Backend connection problem',
+        return render(request, 'materials/multiplexcheck.html', {'menu_text': menu_texts.getComponent(),
+                                                                 'view_texts': view_texts.getComponent(),
+                                                                 'error_message': 'Backend connection problem',
                                                                  'instructions_title': instructions.getTitle(),
                                                                  'instructions_steps': instructions.getSteps()
                                                                  })
@@ -219,7 +261,9 @@ def multiplexcheck(request):
     except Exception as exception:
         print(exception)
         cleanup(uploaded_file_url)
-        return render(request, 'materials/multiplexcheck.html', {'error_message': 'System error',
+        return render(request, 'materials/multiplexcheck.html', {'menu_text': menu_texts.getComponent(),
+                                                                 'view_texts': view_texts.getComponent(),
+                                                                 'error_message': 'System error',
                                                                  'instructions_title': instructions.getTitle(),
                                                                  'instructions_steps': instructions.getSteps()
                                                                  })
@@ -227,6 +271,7 @@ def multiplexcheck(request):
 
 @login_required(login_url='/auth/login')
 def material_manager(request):
+    menu_texts = FrontendTexts('menu')
     instructions = Instructions('materials', 'manage')
     try:
         if request.method == 'POST':
@@ -238,17 +283,23 @@ def material_manager(request):
 
                 if action == '1':
                     return redirect('edit/' + code)
+                elif action == '2':
+                    return redirect('weight/' + code)
 
         else:
             selector_form = SelectorForm()
-            return render(request, 'materials/material_selector.html', {'selector_form': selector_form,
+            return render(request, 'materials/material_selector.html', {'menu_text': menu_texts.getComponent(),
+                                                                        'view_texts': view_texts.getComponent(),
+                                                                        'selector_form': selector_form,
                                                                         'instructions_title': instructions.getTitle(),
                                                                         'instructions_steps': instructions.getSteps()})
 
     except ValueError as exception:
         print("There is a problem with the backend return value")
         print(exception)
-        return render(request, 'materials/material_selector.html', {'error_message': 'Backend problem',
+        return render(request, 'materials/material_selector.html', {'menu_text': menu_texts.getComponent(),
+                                                                    'view_texts': view_texts.getComponent(),
+                                                                    'error_message': 'Backend problem',
                                                                     'instructions_title': instructions.getTitle(),
                                                                     'instructions_steps': instructions.getSteps()
                                                                     })
@@ -256,14 +307,18 @@ def material_manager(request):
     except ConnectionError as exception:
         print("Backend connection problem")
         print(exception)
-        return render(request, 'materials/material_selector.html', {'error_message': 'Backend connection problem',
+        return render(request, 'materials/material_selector.html', {'menu_text': menu_texts.getComponent(),
+                                                                    'view_texts': view_texts.getComponent(),
+                                                                    'error_message': 'Backend connection problem',
                                                                     'instructions_title': instructions.getTitle(),
                                                                     'instructions_steps': instructions.getSteps()
                                                                     })
 
     except Exception as exception:
         print(exception)
-        return render(request, 'materials/material_selector.html', {'error_message': 'System error',
+        return render(request, 'materials/material_selector.html', {'menu_text': menu_texts.getComponent(),
+                                                                    'view_texts': view_texts.getComponent(),
+                                                                    'error_message': 'System error',
                                                                     'instructions_title': instructions.getTitle(),
                                                                     'instructions_steps': instructions.getSteps()
                                                                     })
@@ -271,6 +326,7 @@ def material_manager(request):
 
 @login_required(login_url='/auth/login')
 def material_editor(request, code):
+    menu_texts = FrontendTexts('menu')
     instructions = Instructions('materials', 'edit')
     try:
 
@@ -291,7 +347,7 @@ def material_editor(request, code):
             material_form = MaterialForm(request.POST)
 
             if material_form.is_valid():
-                # ... update current provider with the data provided
+                # ... update current material with the data provided
                 print(code)
 
                 creator = MaterialCreator()
@@ -309,16 +365,22 @@ def material_editor(request, code):
 
                 backend_result = json.loads(backend_message.getValue())
 
-                return render(request, 'materials/material_editor.html', {'updated_materials': backend_result})
+                return render(request, 'materials/material_editor.html', {'menu_text': menu_texts.getComponent(),
+                                                                          'view_texts': view_texts.getComponent(),
+                                                                          'updated_materials': backend_result})
 
-        return render(request, 'materials/material_editor.html', {'material_form': material_form,
+        return render(request, 'materials/material_editor.html', {'menu_text': menu_texts.getComponent(),
+                                                                  'view_texts': view_texts.getComponent(),
+                                                                  'material_form': material_form,
                                                                   'instructions_title': instructions.getTitle(),
                                                                   'instructions_steps': instructions.getSteps()})
 
     except ValueError as exception:
         print("There is a problem with the backend return value")
         print(exception)
-        return render(request, 'materials/material_editor.html', {'error_message': 'No such provider exists in the DB: '
+        return render(request, 'materials/material_editor.html', {'menu_text': menu_texts.getComponent(),
+                                                                  'view_texts': view_texts.getComponent(),
+                                                                  'error_message': 'No such material exists in the DB: '
                                                                                    + code,
                                                                   'instructions_title': instructions.getTitle(),
                                                                   'instructions_steps': instructions.getSteps()
@@ -327,14 +389,73 @@ def material_editor(request, code):
     except ConnectionError as exception:
         print("Backend connection problem")
         print(exception)
-        return render(request, 'materials/material_editor.html', {'error_message': 'Backend connection problem',
+        return render(request, 'materials/material_editor.html', {'menu_text': menu_texts.getComponent(),
+                                                                  'view_texts': view_texts.getComponent(),
+                                                                  'error_message': 'Backend connection problem',
                                                                   'instructions_title': instructions.getTitle(),
                                                                   'instructions_steps': instructions.getSteps()
                                                                   })
 
     except Exception as exception:
         print(exception)
-        return render(request, 'materials/material_editor.html', {'error_message': 'System error',
+        return render(request, 'materials/material_editor.html', {'menu_text': menu_texts.getComponent(),
+                                                                  'view_texts': view_texts.getComponent(),
+                                                                  'error_message': 'System error',
+                                                                  'instructions_title': instructions.getTitle(),
+                                                                  'instructions_steps': instructions.getSteps()
+                                                                  })
+
+
+@login_required(login_url='/auth/login')
+def material_weight(request, code):
+    menu_texts = FrontendTexts('menu')
+    instructions = Instructions('materials', 'weightcalc')
+    try:
+
+        backend_host = MachineConfigurator().getBackend()
+
+        quantity_form = WeightCalculatorForm(request.POST)
+
+        if request.method == 'POST':
+
+            if quantity_form.is_valid():
+                # ... update current material with the data provided
+
+                value = quantity_form.cleaned_data['value']
+                units = UNIT_CHOICES[int(quantity_form.cleaned_data['units'])-1][1]
+
+                result = {'quantity': value, 'units': units}
+
+                r = requests.post(backend_host + '/auth/materials/weights/' + code, json=result)
+
+                backend_message = BackendMessage(json.loads(r.text))
+
+                backend_result = json.loads(backend_message.getValue())
+
+                return render(request, 'materials/material_weight.html', {'menu_text': menu_texts.getComponent(),
+                                                                          'weight_materials': backend_result})
+
+        return render(request, 'materials/material_weight.html', {'menu_text': menu_texts.getComponent(),
+                                                                  'view_texts': view_texts.getComponent(),
+                                                                  'quantity_form': quantity_form,
+                                                                  'instructions_title': instructions.getTitle(),
+                                                                  'instructions_steps': instructions.getSteps()})
+
+    except ConnectionError as exception:
+        print("Backend connection problem")
+        print(exception)
+        return render(request, 'materials/material_weight.html', {'menu_text': menu_texts.getComponent(),
+                                                                  'view_texts': view_texts.getComponent(),
+                                                                  'error_message': 'Backend connection problem',
+                                                                  'instructions_title': instructions.getTitle(),
+                                                                  'instructions_steps': instructions.getSteps()
+                                                                  })
+
+    except Exception as exception:
+        print(exception)
+        return render(request, 'materials/material_weight.html', {'menu_text': menu_texts.getComponent(),
+                                                                  'view_texts': view_texts.getComponent(),
+                                                                  'error_message': 'System error',
                                                                   'instructions_title': instructions.getTitle(),
                                                                   'instructions_steps': instructions.getSteps()
                                                                   })

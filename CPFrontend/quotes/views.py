@@ -13,6 +13,10 @@ import os
 from common.BackendMessage import BackendMessage
 from common.MachineConfig import MachineConfigurator
 from common.Instructions import Instructions
+from common.FrontendTexts import FrontendTexts
+
+
+view_texts = FrontendTexts('quotes')
 
 
 def cleanup(filename):
@@ -25,8 +29,11 @@ def cleanup(filename):
 
 @login_required(login_url='/auth/login')
 def quotes_upload(request):
+    menu_texts = FrontendTexts('menu')
+    instructions = Instructions('quotes', 'upload')
+    uploaded_file_url = ''
     try:
-        instructions = Instructions('quotes', 'upload')
+        form = QuotesForm()
         if request.method == 'POST':
             form = QuotesForm(request.POST, request.FILES)
             if form.is_valid():
@@ -66,12 +73,14 @@ def quotes_upload(request):
 
                 cleanup(uploaded_file_url)
 
-                return render(request, 'quotes/quote_upload.html', {'form': form,
+                return render(request, 'quotes/quote_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                                    'view_texts': view_texts.getComponent(),
+                                                                    'form': form,
                                                                     'error_message': backend_message.getValue()})
 
-        else:
-            form = QuotesForm()
-        return render(request, 'quotes/quote_upload.html', {'form': form,
+        return render(request, 'quotes/quote_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                            'view_texts': view_texts.getComponent(),
+                                                            'form': form,
                                                             'instructions_title': instructions.getTitle(),
                                                             'instructions_steps': instructions.getSteps()})
 
@@ -79,7 +88,9 @@ def quotes_upload(request):
         cleanup(uploaded_file_url)
         print("There is a problem with the backend return value")
         print(exception)
-        return render(request, 'quotes/quote_upload.html', {'form': form,
+        return render(request, 'quotes/quote_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                            'view_texts': view_texts.getComponent(),
+                                                            'form': form,
                                                             'error_message': 'Backend problem',
                                                             'instructions_title': instructions.getTitle(),
                                                             'instructions_steps': instructions.getSteps()
@@ -89,7 +100,9 @@ def quotes_upload(request):
         cleanup(uploaded_file_url)
         print("Backend connection problem")
         print(exception)
-        return render(request, 'rfqs/rfq_upload.html', {'form': form,
+        return render(request, 'rfqs/rfq_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                        'view_texts': view_texts.getComponent(),
+                                                        'form': form,
                                                         'error_message': 'Backend connection problem',
                                                         'instructions_title': instructions.getTitle(),
                                                         'instructions_steps': instructions.getSteps()
@@ -98,7 +111,9 @@ def quotes_upload(request):
     except Exception as exception:
         cleanup(uploaded_file_url)
         print(exception)
-        return render(request, 'quotes/quote_upload.html', {'form': form,
+        return render(request, 'quotes/quote_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                            'view_texts': view_texts.getComponent(),
+                                                            'form': form,
                                                             'error_message': 'General problem',
                                                             'instructions_title': instructions.getTitle(),
                                                             'instructions_steps': instructions.getSteps()

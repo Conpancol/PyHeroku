@@ -1,7 +1,10 @@
 {
   "upload" :
     {
-      "title": "Ingrese los datos de una nueva RFQ:",
+      "title": {
+        "label": "Instrucciones",
+        "text" : "Ingrese los datos de una nueva RFQ:"
+      },
       "steps": {
         "1": "Antes de comenzar, consulte si los materiales en el RFQ se encuentran en la base de datos. Use las herramientas para ese fin.",
         "2": "Si los materiales existen en la BD, cree un archivo en Excel en el que debe ir en columnas lo siguiente: COL#1> numero de orden; COL#2> codigo del material; COL#3> cantidad (1.00 - punto decimal); COL#4> unidad (EA, M, M2, M3, KG)",
@@ -11,7 +14,10 @@
     },
   "export" :
     {
-      "title": "Obtenga una RFQ en formato estandar:",
+      "title": {
+        "label": "Instrucciones",
+        "text" : "Obtenga una RFQ en formato estandar:"
+      },
       "steps": {
         "1": "La RFQ debe estar en la base de datos.",
         "2": "Ingrese el codigo interno de la RFQ y enviar.",
@@ -20,7 +26,10 @@
     },
   "qfinder" :
     {
-      "title": "Obtenga una lista de comprobacion para concer si algun material ha sido cotizado o no anteriormente:",
+      "title": {
+        "label": "Instrucciones",
+        "text" : "Obtenga una lista de comprobacion para concer si algun material ha sido cotizado o no anteriormente:"
+      },
       "steps": {
         "1": "Los materiales ya deben estar en la base de datos.",
         "2": "Descarge el archivo en formato CSV que contiene la RFQ en que desea consultar."

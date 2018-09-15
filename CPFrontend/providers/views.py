@@ -17,6 +17,7 @@ import os
 from common.BackendMessage import BackendMessage
 from common.MachineConfig import MachineConfigurator
 from common.Instructions import Instructions
+from common.FrontendTexts import FrontendTexts
 
 
 def cleanup(filename):
@@ -27,8 +28,12 @@ def cleanup(filename):
         print(error)
 
 
+view_texts = FrontendTexts('providers')
+
+
 @login_required(login_url='/auth/login')
 def simple_upload(request):
+    menu_texts = FrontendTexts('menu')
     instructions = Instructions('providers', 'upload')
     uploaded_file_url = ''
     try:
@@ -58,16 +63,21 @@ def simple_upload(request):
 
             cleanup(uploaded_file_url)
 
-            return render(request, 'providers/simple_upload.html', {
-                'uploaded_providers': backend_result})
+            return render(request, 'providers/simple_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                                    'view_texts': view_texts.getComponent(),
+                                                                    'uploaded_providers': backend_result})
 
-        return render(request, 'providers/simple_upload.html', {'instructions_title': instructions.getTitle(),
+        return render(request, 'providers/simple_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                                'view_texts': view_texts.getComponent(),
+                                                                'instructions_title': instructions.getTitle(),
                                                                 'instructions_steps': instructions.getSteps()})
 
     except MultiValueDictKeyError as exception:
             print("No file selected")
             print(exception)
-            return render(request, 'providers/simple_upload.html', {'error_message': 'No file selected',
+            return render(request, 'providers/simple_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                                    'view_texts': view_texts.getComponent(),
+                                                                    'error_message': 'No file selected',
                                                                     'instructions_title': instructions.getTitle(),
                                                                     'instructions_steps': instructions.getSteps()
                                                                     })
@@ -75,7 +85,9 @@ def simple_upload(request):
         print("There is a problem with the input file - unicode decoding error")
         print(exception)
         cleanup(uploaded_file_url)
-        return render(request, 'providers/simple_upload.html', {'error_message': 'Cannot read file correctly',
+        return render(request, 'providers/simple_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                                'view_texts': view_texts.getComponent(),
+                                                                'error_message': 'Cannot read file correctly',
                                                                 'instructions_title': instructions.getTitle(),
                                                                 'instructions_steps': instructions.getSteps()
                                                                 })
@@ -84,7 +96,9 @@ def simple_upload(request):
         print("There is a problem with the backend return value")
         print(exception)
         cleanup(uploaded_file_url)
-        return render(request, 'providers/simple_upload.html', {'error_message': 'Backend problem',
+        return render(request, 'providers/simple_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                                'view_texts': view_texts.getComponent(),
+                                                                'error_message': 'Backend problem',
                                                                 'instructions_title': instructions.getTitle(),
                                                                 'instructions_steps': instructions.getSteps()
                                                                 })
@@ -93,7 +107,9 @@ def simple_upload(request):
         cleanup(uploaded_file_url)
         print("Backend connection problem")
         print(exception)
-        return render(request, 'providers/simple_upload.html', {'error_message': 'Backend connection problem',
+        return render(request, 'providers/simple_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                                'view_texts': view_texts.getComponent(),
+                                                                'error_message': 'Backend connection problem',
                                                                 'instructions_title': instructions.getTitle(),
                                                                 'instructions_steps': instructions.getSteps()
                                                                 })
@@ -101,7 +117,9 @@ def simple_upload(request):
     except Exception as exception:
         print(exception)
         cleanup(uploaded_file_url)
-        return render(request, 'providers/simple_upload.html', {'error_message': 'System error',
+        return render(request, 'providers/simple_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                                'view_texts': view_texts.getComponent(),
+                                                                'error_message': 'System error',
                                                                 'instructions_title': instructions.getTitle(),
                                                                 'instructions_steps': instructions.getSteps()
                                                                 })
@@ -109,6 +127,7 @@ def simple_upload(request):
 
 @login_required(login_url='/auth/login')
 def list_all(request):
+    menu_texts = FrontendTexts('menu')
     try:
 
         backend_host = MachineConfigurator().getBackend()
@@ -125,30 +144,38 @@ def list_all(request):
 
         contacts = paginator.get_page(page)
 
-        return render(request, 'providers/list_all.html', {'contacts': contacts})
+        return render(request, 'providers/list_all.html', {'menu_text': menu_texts.getComponent(),
+                                                           'view_texts': view_texts.getComponent(),
+                                                           'contacts': contacts})
 
     except ValueError as exception:
         print("There is a problem with the backend return value")
         print(exception)
-        return render(request, 'providers/list_all.html', {'error_message': 'Backend problem',
+        return render(request, 'providers/list_all.html', {'menu_text': menu_texts.getComponent(),
+                                                           'view_texts': view_texts.getComponent(),
+                                                           'error_message': 'Backend problem',
                                                            })
 
     except ConnectionError as exception:
         print("Backend connection problem")
         print(exception)
-        return render(request, 'providers/list_all.html', {'error_message': 'Backend connection problem',
+        return render(request, 'providers/list_all.html', {'menu_text': menu_texts.getComponent(),
+                                                           'view_texts': view_texts.getComponent(),
+                                                           'error_message': 'Backend connection problem',
                                                            })
 
     except Exception as exception:
         print(exception)
-        return render(request, 'providers/list_all.html', {'error_message': 'System error',
+        return render(request, 'providers/list_all.html', {'menu_text': menu_texts.getComponent(),
+                                                           'view_texts': view_texts.getComponent(),
+                                                           'error_message': 'System error',
                                                            })
 
 
 @login_required(login_url='/auth/login')
 def provider_creator(request):
+    menu_texts = FrontendTexts('menu')
     instructions = Instructions('providers', 'create')
-
     try:
         if request.method == 'POST':
             form = ProviderForm(request.POST)
@@ -171,19 +198,24 @@ def provider_creator(request):
 
                 backend_result = json.loads(backend_message.getValue())
 
-                return render(request, 'providers/provider_creator.html', {
-                    'uploaded_providers': backend_result})
+                return render(request, 'providers/provider_creator.html', {'menu_text': menu_texts.getComponent(),
+                                                                           'view_texts': view_texts.getComponent(),
+                                                                           'uploaded_providers': backend_result})
 
         else:
             form = ProviderForm()
-            return render(request, 'providers/provider_creator.html', {'providerform': form,
+            return render(request, 'providers/provider_creator.html', {'menu_text': menu_texts.getComponent(),
+                                                                       'view_texts': view_texts.getComponent(),
+                                                                       'providerform': form,
                                                                        'instructions_title': instructions.getTitle(),
                                                                        'instructions_steps': instructions.getSteps()})
 
     except ValueError as exception:
         print("There is a problem with the backend return value")
         print(exception)
-        return render(request, 'providers/provider_creator.html', {'error_message': 'Backend problem',
+        return render(request, 'providers/provider_creator.html', {'menu_text': menu_texts.getComponent(),
+                                                                   'view_texts': view_texts.getComponent(),
+                                                                   'error_message': 'Backend problem',
                                                                    'instructions_title': instructions.getTitle(),
                                                                    'instructions_steps': instructions.getSteps()
                                                                    })
@@ -191,14 +223,18 @@ def provider_creator(request):
     except ConnectionError as exception:
         print("Backend connection problem")
         print(exception)
-        return render(request, 'providers/provider_creator.html', {'error_message': 'Backend connection problem',
+        return render(request, 'providers/provider_creator.html', {'menu_text': menu_texts.getComponent(),
+                                                                   'view_texts': view_texts.getComponent(),
+                                                                   'error_message': 'Backend connection problem',
                                                                    'instructions_title': instructions.getTitle(),
                                                                    'instructions_steps': instructions.getSteps()
                                                                    })
 
     except Exception as exception:
         print(exception)
-        return render(request, 'providers/provider_creator.html', {'error_message': 'System error',
+        return render(request, 'providers/provider_creator.html', {'menu_text': menu_texts.getComponent(),
+                                                                   'view_texts': view_texts.getComponent(),
+                                                                   'error_message': 'System error',
                                                                    'instructions_title': instructions.getTitle(),
                                                                    'instructions_steps': instructions.getSteps()
                                                                    })
@@ -206,6 +242,7 @@ def provider_creator(request):
 
 @login_required(login_url='/auth/login')
 def provider_manager(request):
+    menu_texts = FrontendTexts('menu')
     instructions = Instructions('providers', 'manage')
     try:
         if request.method == 'POST':
@@ -222,14 +259,18 @@ def provider_manager(request):
 
         else:
             selector_form = SelectorForm()
-            return render(request, 'providers/provider_selector.html', {'selector_form': selector_form,
+            return render(request, 'providers/provider_selector.html', {'menu_text': menu_texts.getComponent(),
+                                                                        'view_texts': view_texts.getComponent(),
+                                                                        'selector_form': selector_form,
                                                                         'instructions_title': instructions.getTitle(),
                                                                         'instructions_steps': instructions.getSteps()})
 
     except ValueError as exception:
         print("There is a problem with the backend return value")
         print(exception)
-        return render(request, 'providers/provider_selector.html', {'error_message': 'Backend problem',
+        return render(request, 'providers/provider_selector.html', {'menu_text': menu_texts.getComponent(),
+                                                                    'view_texts': view_texts.getComponent(),
+                                                                    'error_message': 'Backend problem',
                                                                     'instructions_title': instructions.getTitle(),
                                                                     'instructions_steps': instructions.getSteps()
                                                                     })
@@ -237,14 +278,18 @@ def provider_manager(request):
     except ConnectionError as exception:
         print("Backend connection problem")
         print(exception)
-        return render(request, 'providers/provider_selector.html', {'error_message': 'Backend connection problem',
+        return render(request, 'providers/provider_selector.html', {'menu_text': menu_texts.getComponent(),
+                                                                    'view_texts': view_texts.getComponent(),
+                                                                    'error_message': 'Backend connection problem',
                                                                     'instructions_title': instructions.getTitle(),
                                                                     'instructions_steps': instructions.getSteps()
                                                                     })
 
     except Exception as exception:
         print(exception)
-        return render(request, 'providers/provider_selector.html', {'error_message': 'System error',
+        return render(request, 'providers/provider_selector.html', {'menu_text': menu_texts.getComponent(),
+                                                                    'view_texts': view_texts.getComponent(),
+                                                                    'error_message': 'System error',
                                                                     'instructions_title': instructions.getTitle(),
                                                                     'instructions_steps': instructions.getSteps()
                                                                     })
@@ -252,6 +297,7 @@ def provider_manager(request):
 
 @login_required(login_url='/auth/login')
 def provider_editor(request, code):
+    menu_texts = FrontendTexts('menu')
     instructions = Instructions('providers', 'edit')
     try:
 
@@ -288,16 +334,22 @@ def provider_editor(request, code):
 
                 backend_result = json.loads(backend_message.getValue())
 
-                return render(request, 'providers/provider_editor.html', {'updated_providers': backend_result})
+                return render(request, 'providers/provider_editor.html', {'menu_text': menu_texts.getComponent(),
+                                                                          'view_texts': view_texts.getComponent(),
+                                                                          'updated_providers': backend_result})
 
-        return render(request, 'providers/provider_editor.html', {'provider_form': provider_form,
+        return render(request, 'providers/provider_editor.html', {'menu_text': menu_texts.getComponent(),
+                                                                  'view_texts': view_texts.getComponent(),
+                                                                  'provider_form': provider_form,
                                                                   'instructions_title': instructions.getTitle(),
                                                                   'instructions_steps': instructions.getSteps()})
 
     except ValueError as exception:
         print("There is a problem with the backend return value")
         print(exception)
-        return render(request, 'providers/provider_editor.html', {'error_message': 'No such provider exists in the DB: '
+        return render(request, 'providers/provider_editor.html', {'menu_text': menu_texts.getComponent(),
+                                                                  'view_texts': view_texts.getComponent(),
+                                                                  'error_message': 'No such provider exists in the DB: '
                                                                                    + code,
                                                                   'instructions_title': instructions.getTitle(),
                                                                   'instructions_steps': instructions.getSteps()
@@ -306,14 +358,18 @@ def provider_editor(request, code):
     except ConnectionError as exception:
         print("Backend connection problem")
         print(exception)
-        return render(request, 'providers/provider_editor.html', {'error_message': 'Backend connection problem',
+        return render(request, 'providers/provider_editor.html', {'menu_text': menu_texts.getComponent(),
+                                                                  'view_texts': view_texts.getComponent(),
+                                                                  'error_message': 'Backend connection problem',
                                                                   'instructions_title': instructions.getTitle(),
                                                                   'instructions_steps': instructions.getSteps()
                                                                   })
 
     except Exception as exception:
         print(exception)
-        return render(request, 'providers/provider_editor.html', {'error_message': 'System error',
+        return render(request, 'providers/provider_editor.html', {'menu_text': menu_texts.getComponent(),
+                                                                  'view_texts': view_texts.getComponent(),
+                                                                  'error_message': 'System error',
                                                                   'instructions_title': instructions.getTitle(),
                                                                   'instructions_steps': instructions.getSteps()
                                                                   })
@@ -321,8 +377,8 @@ def provider_editor(request, code):
 
 @login_required(login_url='/auth/login')
 def provider_comment(request, code):
+    menu_texts = FrontendTexts('menu')
     instructions = Instructions('providers', 'comment')
-
     try:
 
         if request.method == 'POST':
@@ -343,17 +399,23 @@ def provider_comment(request, code):
 
                 backend_result = json.loads(backend_message.getValue())
 
-                return render(request, 'providers/provider_comment.html', {'updated_providers': backend_result})
+                return render(request, 'providers/provider_comment.html', {'menu_text': menu_texts.getComponent(),
+                                                                           'view_texts': view_texts.getComponent(),
+                                                                           'updated_providers': backend_result})
 
         form = CommentForm()
-        return render(request, 'providers/provider_comment.html', {'comment_form': form,
+        return render(request, 'providers/provider_comment.html', {'menu_text': menu_texts.getComponent(),
+                                                                   'view_texts': view_texts.getComponent(),
+                                                                   'comment_form': form,
                                                                    'instructions_title': instructions.getTitle(),
                                                                    'instructions_steps': instructions.getSteps()})
 
     except ValueError as exception:
         print("There is a problem with the backend return value")
         print(exception)
-        return render(request, 'providers/provider_comment.html', {'error_message': 'Backend problem',
+        return render(request, 'providers/provider_comment.html', {'menu_text': menu_texts.getComponent(),
+                                                                   'view_texts': view_texts.getComponent(),
+                                                                   'error_message': 'Backend problem',
                                                                    'instructions_title': instructions.getTitle(),
                                                                    'instructions_steps': instructions.getSteps()
                                                                    })
@@ -361,14 +423,18 @@ def provider_comment(request, code):
     except ConnectionError as exception:
         print("Backend connection problem")
         print(exception)
-        return render(request, 'providers/provider_comment.html', {'error_message': 'Backend connection problem',
+        return render(request, 'providers/provider_comment.html', {'menu_text': menu_texts.getComponent(),
+                                                                   'view_texts': view_texts.getComponent(),
+                                                                   'error_message': 'Backend connection problem',
                                                                    'instructions_title': instructions.getTitle(),
                                                                    'instructions_steps': instructions.getSteps()
                                                                    })
 
     except Exception as exception:
         print(exception)
-        return render(request, 'providers/provider_comment.html', {'error_message': 'System error',
+        return render(request, 'providers/provider_comment.html', {'menu_text': menu_texts.getComponent(),
+                                                                   'view_texts': view_texts.getComponent(),
+                                                                   'error_message': 'System error',
                                                                    'instructions_title': instructions.getTitle(),
                                                                    'instructions_steps': instructions.getSteps()
                                                                    })

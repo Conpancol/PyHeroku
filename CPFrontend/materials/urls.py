@@ -8,5 +8,6 @@ urlpatterns = [
     path('multiplexcheck/', views.multiplexcheck, name='multiplexcheck'),
     path('manage/', views.material_manager, name='material_manager'),
     path('manage/edit/<str:code>', views.material_editor, name='material_editor'),
+    path('manage/weight/<str:code>', views.material_weight, name='material_weight'),
 
 ]

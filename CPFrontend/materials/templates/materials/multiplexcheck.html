@@ -14,9 +14,9 @@
 
 <div class="content">
 
-  <h2>Materials cross checks</h2>
+  <h2>{{view_texts.multiplexcheck.main_title}}</h2>
 
-  <h4>Query for multiple materials</h4>
+  <h4>{{view_texts.multiplexcheck.sub_title}}</h4>
 
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
@@ -29,7 +29,7 @@
       <input class="form-control" type="file" name="myfile">
     </div>
 
-    <button type="submit" class="btn btn-success">Submit</button>
+    <button type="submit" class="btn btn-success">{{view_texts.multiplexcheck.submit}}</button>
 
   </form>
 

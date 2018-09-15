@@ -22,3 +22,11 @@ class MaterialForm(forms.Form):
     category = forms.CharField(max_length=255)
     dimensions = forms.CharField(max_length=255)
 
+
+class WeightCalculatorForm(forms.Form):
+    value = forms.FloatField()
+    units = forms.ChoiceField(choices=UNIT_CHOICES,
+                              label="UNITS",
+                              initial='',
+                              widget=forms.Select(),
+                              required=True)

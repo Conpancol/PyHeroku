@@ -1,50 +1,59 @@
+{% if menu_text %}
+
 <div class="nav-bar">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="collapse navbar-collapse" id="navbarNav">
 
                 <ul class="navbar-nav">
                 <li class="nav-item active">
-                <a class="nav-link" href="/menu">Menu<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/menu">{{menu_text.home.main}}<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        RFQs
+                        {{menu_text.RFQs.main}}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="/rfqs/upload">Uploader</a>
-                        <a class="dropdown-item" href="/rfqs/download">Exporter</a>
-                        <a class="dropdown-item" href="/rfqs/quotefinder/">Quote finder</a>
+                        <a class="dropdown-item" href="/rfqs/upload">{{menu_text.RFQs.uploader}}</a>
+                        <a class="dropdown-item" href="/rfqs/download">{{menu_text.RFQs.exporter}}</a>
+                        <a class="dropdown-item" href="/rfqs/quotefinder/">{{menu_text.RFQs.finder}}</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{menu_text.Quotes.main}}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="/quotes/upload">{{menu_text.Quotes.uploader}}</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{menu_text.Materials.main}}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="/materials/upload">{{menu_text.Materials.uploader}}</a>
+                        <a class="dropdown-item" href="/materials/singlexcheck">{{menu_text.Materials.single_xchecker}}</a>
+                        <a class="dropdown-item" href="/materials/multiplexcheck">{{menu_text.Materials.multi_xchecker}}</a>
+                        <a class="dropdown-item" href="/materials/manage">{{menu_text.Materials.manager}}</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{menu_text.Providers.main}}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="/providers/create">{{menu_text.Providers.creator}}</a>
+                        <a class="dropdown-item" href="/providers/upload">{{menu_text.Providers.uploader}}</a>
+                        <a class="dropdown-item" href="/providers/manage">{{menu_text.Providers.manager}}</a>
+                        <a class="dropdown-item" href="/providers/list">{{menu_text.Providers.list_all}}</a>
                     </div>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="/quotes/upload">Quotes</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Materials
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="/materials/singlexcheck">Single xchecker</a>
-                        <a class="dropdown-item" href="/materials/multiplexcheck">Multiple xchecker</a>
-                        <a class="dropdown-item" href="/materials/upload">Uploader</a>
-                        <a class="dropdown-item" href="/materials/manage">Manager</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Providers
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="/providers/create">Creator</a>
-                        <a class="dropdown-item" href="/providers/upload">Uploader</a>
-                        <a class="dropdown-item" href="/providers/manage">Manager</a>
-                        <a class="dropdown-item" href="/providers/list">List all</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="/auth/logout">Logout</a>
+                <a class="nav-link" href="/auth/logout">{{menu_text.logout.main}}</a>
                 </li>
                 </ul>
             </div>
         </nav>
 </div>
+
+{% endif %}

@@ -14,7 +14,7 @@
 
 <div class="content">
 
-  <h2>Create a Provider and add it to DB</h2>
+  <h2>{{view_texts.creator.main_title}}</h2>
 
   <form action="" method="POST">
     {% csrf_token %}
@@ -32,7 +32,7 @@
             {% endfor %}
           </div>
         {% endfor %}
-    <button type="submit" class="btn btn-success">Submit</button>
+    <button type="submit" class="btn btn-success">{{view_texts.creator.submit}}</button>
    </form>
 
   <div class="content-items">

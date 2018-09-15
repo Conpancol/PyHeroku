@@ -2,7 +2,7 @@ import json
 
 
 class Instructions:
-    """Instrucciones de la funcionalidad de la apliacion"""
+    """Instrucciones de la funcionalidad de la aplicacion"""
     def __init__(self, app, view):
         self.locale = "es_CO"
         self.app = app

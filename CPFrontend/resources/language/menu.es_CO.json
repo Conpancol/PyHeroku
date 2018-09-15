@@ -1,0 +1,34 @@
+{
+  "menu" : {
+    "home" : {
+      "main" : "Inicio"
+    },
+    "logout" : {
+      "main": "Salir"
+    },
+    "RFQs" : {
+      "main" : "Requerimientos",
+      "uploader" : "Crear",
+      "exporter" : "Exportar",
+      "finder" : "Buscar"
+    },
+    "Quotes" : {
+      "main" : "Cotizaciones",
+      "uploader" : "Crear"
+    },
+    "Materials" : {
+      "main" : "Materiales",
+      "single_xchecker" : "Verificador simple",
+      "multi_xchecker" : "Verificador multiple",
+      "uploader" : "Crear",
+      "manager" : "Herramientas"
+    },
+    "Providers" : {
+      "main" : "Proveedores",
+      "creator" : "Crear",
+      "uploader" : "Subir",
+      "manager" : "Herramientas",
+      "list_all" : "Listar todos"
+    }
+  }
+}

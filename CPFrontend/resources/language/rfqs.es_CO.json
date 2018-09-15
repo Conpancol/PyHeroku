@@ -1,0 +1,18 @@
+{
+  "rfqs" : {
+    "simple_upload" : {
+      "main_title" : "Cree una nueva RFQ",
+      "submit": "Enviar"
+    },
+    "export" : {
+      "main_title" : "Busca y exporta una RFQ existente",
+      "sub_title" : "Indique el código interno",
+      "submit": "Enviar"
+    },
+    "qfinder" : {
+      "main_title" : "Buscador de elementos cotizados anteriormente",
+      "sub_title" : "Suba el archivo con los códigos de materiales",
+      "submit": "Enviar"
+    }
+  }
+}
