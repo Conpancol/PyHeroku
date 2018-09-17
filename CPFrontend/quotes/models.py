@@ -13,5 +13,6 @@ class Quote(models.Model):
     contactName = models.CharField(max_length=255, blank=True)
     incoterms = models.CharField(max_length=255, blank=True)
     note = models.CharField(max_length=255, blank=True)
+    edt = models.CharField(max_length=255, blank=True)
     document = models.FileField(upload_to='documents/')
 

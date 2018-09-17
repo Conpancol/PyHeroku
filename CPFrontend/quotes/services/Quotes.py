@@ -14,6 +14,7 @@ class Quotes:
         self.incoterms = "X"
         self.materialList = []
         self.note = "NA"
+        self.edt = "NA"
 
     def setIntenalCode(self, code):
         self.internalCode = code
@@ -57,6 +58,9 @@ class Quotes:
 
     def setNote(self,note):
         self.note = note
+
+    def setEdt(self, edt):
+        self.edt = edt
 
     def to_json(self):
         obj_list = [ ob.__dict__ for ob in self.materialList]

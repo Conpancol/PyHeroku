@@ -16,4 +16,5 @@ class QuotesForm(forms.ModelForm):
                   'contactName',
                   'incoterms',
                   'note',
+                  'edt',
                   'document')

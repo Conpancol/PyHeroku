@@ -15,6 +15,9 @@ class Providers:
         self.contactNames = ''
         self.specialty = ''
         self.taxId = ''
+        self.hasDataProtection = False
+        self.bank = ''
+        self.iban = ''
         self.comments = []
 
     def setProviderId(self, id):
@@ -59,6 +62,14 @@ class Providers:
     def setTaxId(self, taxid):
         self.taxId = taxid
 
+    def setHasDataProtection(self, flag):
+        self.hasDataProtection = flag
+
+    def setBank(self, bank):
+        self.bank = bank
+
+    def setIban(self, iban):
+        self.iban = iban
+
     def setComments(self, comments):
         self.comments = comments
-

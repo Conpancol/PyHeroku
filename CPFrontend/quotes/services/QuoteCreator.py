@@ -27,11 +27,14 @@ class QuoteCreator:
         dt = datetime.datetime.now()
         self.quote.setProcessedDate(dt.strftime('%d/%m/%Y'))
 
-    def setQuoteNote(self,note):
+    def setQuoteNote(self, note):
         self.quote.setNote(note)
 
-    def setQuoteIncoterms(self,incoterms):
+    def setQuoteIncoterms(self, incoterms):
         self.quote.setIncoterms(incoterms)
+
+    def setQuoteEdt(self, edt):
+        self.quote.setEdt(edt)
 
     def createQuotefromCSV(self, csvfile):
         try:

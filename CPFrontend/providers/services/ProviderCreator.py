@@ -5,6 +5,7 @@ from common.Providers import Providers
 from common.Comments import Comments
 from ..choices import *
 
+
 class ProviderCreator:
 
     def __init__(self):
@@ -35,6 +36,8 @@ class ProviderCreator:
                     contactNames = row[8]
                     specialty = row[9]
                     taxid = row[10]
+                    bank = row[11]
+                    iban = row[12]
 
                     provider = Providers()
                     provider.setProviderId('NA')
@@ -52,6 +55,9 @@ class ProviderCreator:
                     provider.setSpecialty(specialty)
                     provider.setTaxId(taxid)
                     provider.setComments([])
+                    provider.setHasDataProtection(False)
+                    provider.setBank(bank)
+                    provider.setIban(iban)
 
                     obj_id = provider.__dict__
                     self.provider_list.append(obj_id)
