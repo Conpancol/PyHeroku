@@ -3,10 +3,10 @@ url = "https://pypi.python.org/simple"
 verify_ssl = true
 
 [packages]
-django = "*"
+django = ">=2.1.5"
 gunicorn = "*"
 django-heroku = "*"
-requests = "*"
+requests = ">=2.20.0"
 jwt = "*"
 django-widget-tweaks = "*"
 

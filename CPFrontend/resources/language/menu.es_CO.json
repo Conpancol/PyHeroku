@@ -8,25 +8,25 @@
     },
     "RFQs" : {
       "main" : "Requerimientos",
-      "uploader" : "Crear",
+      "uploader" : "Adicionar",
       "exporter" : "Exportar",
       "finder" : "Buscar"
     },
     "Quotes" : {
       "main" : "Cotizaciones",
-      "uploader" : "Crear"
+      "uploader" : "Adicionar"
     },
     "Materials" : {
       "main" : "Materiales",
       "single_xchecker" : "Verificador simple",
       "multi_xchecker" : "Verificador multiple",
-      "uploader" : "Crear",
+      "uploader" : "Adicionar",
       "manager" : "Herramientas"
     },
     "Providers" : {
       "main" : "Proveedores",
       "creator" : "Crear",
-      "uploader" : "Subir",
+      "uploader" : "Adicionar",
       "manager" : "Herramientas",
       "list_all" : "Listar todos"
     }
