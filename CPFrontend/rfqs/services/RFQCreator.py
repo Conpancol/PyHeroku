@@ -74,8 +74,10 @@ class RFQCreator:
         labels.append('Type')
         labels.append('Quantity')
         labels.append('Unit')
+        #   labels.append('# Plates')
+        #   labels.append('History')
 
-        internal_code = str(rfq[ "internalCode" ])
+        internal_code = str(rfq["internalCode" ])
         csvfile = 'RFQ-' + internal_code + '_Conpancol.csv'
         path = "media/export/" + csvfile
 
@@ -138,30 +140,36 @@ class RFQCreator:
             logging.info('Problem with file creation')
             return path
 
-        except Exception:
-            logging.info('General exception')
+        except Exception as e:
+            logging.info('General exception' + str(e))
             return path
 
     def getNumberPlates(self, dimensions, total_area):
         nplates = 0.0
         all_dims = dimensions.split(',')
 
-        for dm in all_dims:
-            if re.search('MM', dm):
-                dim_values = []
-                dims = dm.split('X')
-                if len(dims) == 3:
-                    for dd in dims:
-                        try:
-                            dim_values.append(float(dd.replace(' ', '').replace('MM', '')))
-                        except ValueError:
-                            dim_values.append(0.0)
-                            logging.info('Got a Value conversion exception, please check')
-                            logging.info(dd.replace(' ', '').replace('MM', ''))
+        try:
 
-                    area = dim_values[0] * dim_values[1] * 0.000001
-                    nplates = format(total_area / area, '.2f')
-                    print(dim_values, total_area, nplates)
+            for dm in all_dims:
+                if re.search('MM', dm):
+                    dim_values = []
+                    dims = dm.split('X')
+                    if len(dims) == 3:
+                        for dd in dims:
+                            try:
+                                dim_values.append(float(dd.replace(' ', '').replace('MM', '')))
+                            except ValueError:
+                                dim_values.append(0.0)
+                                logging.info('Got a Value conversion exception, please check')
+                                logging.info(dd.replace(' ', '').replace('MM', ''))
+
+                        area = dim_values[0] * dim_values[1] * 0.000001
+                        nplates = format(total_area / area, '.2f')
+                        print(dim_values, total_area, nplates)
+        except Exception as e:
+            print("There is a problem with your dimensions")
+            print(e)
+
         return nplates
 
     def findQuotesFromCSV(self, csvfile):
