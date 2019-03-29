@@ -1,6 +1,5 @@
 from django import forms
 from .models import RFQ
-from .models import RFQMaterial
 from .choices import *
 
 
@@ -25,15 +24,6 @@ class RFQFormOnlyinfo(forms.ModelForm):
                   'company',
                   'receivedDate',
                   'note')
-
-
-class RFQMaterialForm(forms.ModelForm):
-    class Meta:
-        model = RFQMaterial
-        fields = ('orderNumber',
-                  'itemCode',
-                  'quantity',
-                  'unit')
 
 
 class RFQInternalCode(forms.Form):

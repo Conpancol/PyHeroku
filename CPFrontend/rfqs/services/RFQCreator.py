@@ -231,25 +231,3 @@ class RFQCreator:
         except IOError as error:
             print(error)
             return self.rfq_list
-
-    def editRFQMaterial(self, form):
-        try:
-            orderNumber = form.cleaned_data['orderNumber']
-            itemCode = form.cleaned_data['itemCode']
-            quantity = form.cleaned_data['quantity']
-            unit = form.cleaned_data['unit']
-
-            extmat = ExtMaterials()
-            extmat.setOrderNumber(orderNumber)
-            extmat.setItemCode(itemCode)
-            extmat.setQuantity(quantity)
-            extmat.setUnit(unit)
-
-            obj_id = extmat.__dict__
-            self.rfq_list.append(obj_id)
-
-            return self.rfq_list
-
-        except IOError as error:
-            print(error)
-            return self.rfq_list

@@ -9,7 +9,6 @@ from .services.RFQCreator import RFQCreator
 from .forms import RFQForm
 from .forms import RFQFormOnlyinfo
 from .forms import RFQInternalCode
-from .forms import RFQMaterialForm
 from .forms import SelectorForm
 
 # from .choices import ACTION_CHOICES
@@ -297,8 +296,6 @@ def rfq_manager(request):
 
                 if action == '1':
                     return redirect('edit/' + code)
-                elif action == '2':
-                    return redirect('edit/material/' + code)
 
         else:
             selector_form = SelectorForm()
@@ -414,81 +411,3 @@ def rfq_editor(request, code):
                                                         'error_message': 'System error',
                                                         'instructions_title': instructions.getTitle(),
                                                         'instructions_steps': instructions.getSteps()})
-
-
-@login_required(login_url='/auth/login')
-def rfq_material_editor(request, code, order):
-    menu_texts = FrontendTexts('menu')
-    instructions = Instructions('rfqs', 'edit')
-    try:
-
-        backend_host = MachineConfigurator().getBackend()
-
-        r = requests.post(backend_host + '/auth/rfqs/' + code + '/' + order)
-
-        backend_message = BackendMessage(json.loads(r.text))
-
-        backend_result = json.loads(backend_message.getValue())
-
-        print(backend_result)
-
-        rfq_form = RFQMaterialForm(initial=backend_result)
-
-        if request.method == 'POST':
-
-            rfq_form = RFQMaterialForm(request.POST)
-
-            if rfq_form.is_valid():
-                # ... update current material with the data provided
-                print(code)
-
-                creator = RFQCreator()
-                result = creator.editRFQMaterial(rfq_form)
-                result_json = []
-
-                print(result)
-
-                for rfq in result:
-                    result_json.append(json.dumps(rfq))
-
-                r = requests.put(backend_host + '/auth/rfqs/' + code, json=result)
-
-                backend_message = BackendMessage(json.loads(r.text))
-
-                backend_result = json.loads(backend_message.getValue())
-
-                return render(request, 'rfqs/rfq_material_editor.html', {'menu_text': menu_texts.getComponent(),
-                                                                          'view_texts': view_texts.getComponent(),
-                                                                          'updated_materials': backend_result})
-
-        return render(request, 'rfqs/rfq_material_editor.html', {'menu_text': menu_texts.getComponent(),
-                                                                  'view_texts': view_texts.getComponent(),
-                                                                  'rfq_form': rfq_form,
-                                                                  'instructions_title': instructions.getTitle(),
-                                                                  'instructions_steps': instructions.getSteps()})
-
-    except ValueError as exception:
-        print("There is a problem with the backend return value")
-        print(exception)
-        return render(request, 'rfqs/rfq_material_editor.html', {'menu_text': menu_texts.getComponent(),
-                                                                  'view_texts': view_texts.getComponent(),
-                                                                  'error_message': 'No such RFQ exists in the DB: '+ code,
-                                                                  'instructions_title': instructions.getTitle(),
-                                                                  'instructions_steps': instructions.getSteps() })
-
-    except ConnectionError as exception:
-        print("Backend connection problem")
-        print(exception)
-        return render(request, 'rfqs/rfq_material_editor.html', {'menu_text': menu_texts.getComponent(),
-                                                                  'view_texts': view_texts.getComponent(),
-                                                                  'error_message': 'Backend connection problem',
-                                                                  'instructions_title': instructions.getTitle(),
-                                                                  'instructions_steps': instructions.getSteps()})
-
-    except Exception as exception:
-        print(exception)
-        return render(request, 'rfqs/rfq_material_editor.html', {'menu_text': menu_texts.getComponent(),
-                                                                  'view_texts': view_texts.getComponent(),
-                                                                  'error_message': 'System error',
-                                                                  'instructions_title': instructions.getTitle(),
-                                                                  'instructions_steps': instructions.getSteps()})

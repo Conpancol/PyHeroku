@@ -12,9 +12,3 @@ class RFQ(models.Model):
     document = models.FileField(upload_to='documents/')
 
 
-class RFQMaterial(models.Model):
-    orderNumber = models.PositiveIntegerField(blank=True)
-    itemCode = models.CharField(max_length=255, blank=True)
-    quantity = models.FloatField(blank=True)
-    unit = models.CharField(max_length=255, blank=True)
-

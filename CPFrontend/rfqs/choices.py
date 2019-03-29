@@ -6,6 +6,6 @@ INCOTERMS_CHOICES = (
 )
 
 ACTION_CHOICES = (
-    (1, "Edit info"),
-    (2, "Edit requested material"),
+    (1, "Edit"),
+    (2, "Reload materials"),
 )
