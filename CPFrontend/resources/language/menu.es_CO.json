@@ -10,7 +10,8 @@
       "main" : "Requerimientos",
       "uploader" : "Adicionar",
       "exporter" : "Exportar",
-      "finder" : "Buscar"
+      "finder" : "Buscar",
+      "manager" : "Herramientas"
     },
     "Quotes" : {
       "main" : "Cotizaciones",

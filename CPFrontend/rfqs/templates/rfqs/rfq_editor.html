@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% load static %}
+
+{% block menu %}
+
+{% include "navbar.html" %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="content">
+
+    {% if rfq_form %}
+
+    <h2>{{view_texts.editor.main_title}}</h2>
+
+    <form action="" method="POST">
+    {% csrf_token %}
+
+    {% for hidden in rfq.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+
+    {% for field in rfq_form.visible_fields %}
+          <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field |add_class:'form-control'}}
+            {% for error in field.errors %}
+              <span class="help-block">{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% endfor %}
+
+    <button type="submit" class="btn btn-success">{{view_texts.editor.submit}}</button>
+
+    </form>
+
+    {% endif %}
+
+   <div class="content-items">
+      {% if updated_materials %}
+
+      <h2>{{view_texts.editor.main_result_title}}</h2>
+
+      <table class="table table-dark">
+          <thead>
+            <tr>
+                <th scope="col">Project code</th>
+                <th scope="col">Request code</th>
+                <th scope="col">Status</th>
+            </tr>
+          </thead>
+        <tbody>
+            <tr>
+            {% for material in updated_materials %}
+            <tr>
+                <td>{{ material.internalCode }}</td> <td>{{ material.externalCode }}</td> <td>{{ material.status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+
+       <a href="/rfqs/manage" class="btn btn-success" role="button">{{view_texts.editor.back}}</a>
+
+   </div>
+
+    {% endif %}
+
+    {% if error_message %}
+          <h2>{{view_texts.editor.main_result_title}}</h2>
+          <p> {{ error_message }} </p>
+          <a href="/rfqs/manage" class="btn btn-success" role="button">{{view_texts.editor.back}}</a>
+    {% endif %}
+
+    <p></p>
+
+    {% block instructions %}
+        {% include "instructions.html" %}
+    {% endblock %}
+
+</div>
+
+{% endblock %}

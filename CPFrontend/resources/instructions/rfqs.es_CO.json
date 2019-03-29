@@ -34,5 +34,26 @@
         "1": "Los materiales ya deben estar en la base de datos.",
         "2": "Descarge el archivo en formato CSV que contiene la RFQ en que desea consultar."
       }
+    },
+  "manage" :
+    {
+      "title": {
+        "label": "Instrucciones",
+        "text" : "Gestión de RFQs"
+      },
+      "steps": {
+        "1": "Editar información de una RFQ determinada"
+      }
+    },
+  "edit" :
+    {
+      "title": {
+        "label": "Instrucciones",
+        "text" : "Edita las entradas de una RFQ en la DB"
+      },
+      "steps": {
+        "1": "Llenar el formulario con la información necesaria",
+        "2": "Enviar"
+      }
     }
 }

@@ -4,3 +4,8 @@ INCOTERMS_CHOICES = (
     (3, "CIF"),
     (4, "EXW"),
 )
+
+ACTION_CHOICES = (
+    (1, "Edit info"),
+    (2, "Edit requested material"),
+)

@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% load static %}
+
+{% block menu %}
+
+{% include "navbar.html" %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="content">
+
+  <h2>{{view_texts.editor.main_title}}</h2>
+
+    {% if rfq_form %}
+
+    <form action="" method="POST">
+    {% csrf_token %}
+
+    {% for hidden in rfq.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+
+    {% for field in rfq_form.visible_fields %}
+          <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field |add_class:'form-control'}}
+            {% for error in field.errors %}
+              <span class="help-block">{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% endfor %}
+
+    <button type="submit" class="btn btn-success">{{view_texts.editor.submit}}</button>
+
+    </form>
+
+    {% endif %}
+
+   <div class="content-items">
+      {% if updated_materials %}
+
+      <table class="table table-dark">
+          <thead>
+            <tr>
+                <th scope="col">Code</th>
+                <th scope="col">Description</th>
+                <th scope="col">Status</th>
+            </tr>
+          </thead>
+        <tbody>
+            <tr>
+            {% for material in updated_materials %}
+            <tr>
+                <td>{{ material.itemcode }}</td> <td>{{ material.description }}</td> <td>{{ material.status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+
+       <a href="/rfqs/manage" class="btn btn-success" role="button">Back</a>
+
+  {% endif %}
+
+   </div>
+
+      {% if error_message %}
+          <p> {{ error_message }} </p>
+      {% endif %}
+
+      {% block instructions %}
+        {% include "instructions.html" %}
+      {% endblock %}
+
+</div>
+
+{% endblock %}

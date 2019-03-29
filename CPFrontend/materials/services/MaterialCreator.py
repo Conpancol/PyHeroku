@@ -72,7 +72,6 @@ class MaterialCreator:
             print(error)
             return self.material_list
 
-
     def editMaterial(self, form):
         try:
             itemcode = form.cleaned_data['itemcode']

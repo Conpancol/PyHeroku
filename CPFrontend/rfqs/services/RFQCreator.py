@@ -14,6 +14,7 @@ class RFQCreator:
     """clase para crear RFQs"""
     def __init__(self):
         self.rfq = RequestForQuotes()
+        self.rfq_list = []
         logging.basicConfig(filename='logs/rfqcreator.log', level=logging.DEBUG)
 
     def setRFQInformation(self, internalCode, externalCode, sender, company, receivedDate):
@@ -204,3 +205,51 @@ class RFQCreator:
 
         except IOError as error:
             print(error)
+
+    def editRFQ(self, form):
+        try:
+            internalCode = form.cleaned_data['internalCode']
+            externalCode = form.cleaned_data['externalCode']
+            sender = form.cleaned_data['sender']
+            company = form.cleaned_data['company']
+            receivedDate = form.cleaned_data['receivedDate']
+            note = form.cleaned_data['note']
+
+            rfq = RequestForQuotes()
+            rfq.setIntenalCode(internalCode)
+            rfq.setExternalCode(externalCode)
+            rfq.setSender(sender)
+            rfq.setCompany(company)
+            rfq.setReceivedDate(receivedDate)
+            rfq.setNote(note)
+
+            obj_id = rfq.__dict__
+            self.rfq_list.append(obj_id)
+
+            return self.rfq_list
+
+        except IOError as error:
+            print(error)
+            return self.rfq_list
+
+    def editRFQMaterial(self, form):
+        try:
+            orderNumber = form.cleaned_data['orderNumber']
+            itemCode = form.cleaned_data['itemCode']
+            quantity = form.cleaned_data['quantity']
+            unit = form.cleaned_data['unit']
+
+            extmat = ExtMaterials()
+            extmat.setOrderNumber(orderNumber)
+            extmat.setItemCode(itemCode)
+            extmat.setQuantity(quantity)
+            extmat.setUnit(unit)
+
+            obj_id = extmat.__dict__
+            self.rfq_list.append(obj_id)
+
+            return self.rfq_list
+
+        except IOError as error:
+            print(error)
+            return self.rfq_list

@@ -64,9 +64,9 @@ def simple_upload(request):
 
             cleanup(uploaded_file_url)
 
-            return render(request, 'materials/simple_upload.html', {
-                'menu_text': menu_texts.getComponent(),
-                'uploaded_materials': backend_result})
+            return render(request, 'materials/simple_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                                    'view_texts': view_texts.getComponent(),
+                                                                    'uploaded_materials': backend_result } )
 
         return render(request, 'materials/simple_upload.html', {'menu_text': menu_texts.getComponent(),
                                                                 'view_texts': view_texts.getComponent(),
