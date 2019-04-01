@@ -3,10 +3,13 @@ from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.http import Http404
+from django.forms import formset_factory
+
 from requests.exceptions import ConnectionError
 
 from .services.RFQCreator import RFQCreator
 from .forms import RFQForm
+from .forms import ExtMaterialForm
 from .forms import RFQFormOnlyinfo
 from .forms import RFQInternalCode
 from .forms import SelectorForm
@@ -349,8 +352,6 @@ def rfq_editor(request, code):
 
         backend_result = json.loads(backend_message.getValue())
 
-        print(backend_result)
-
         rfq_form = RFQFormOnlyinfo(initial=backend_result)
 
         if request.method == 'POST':
@@ -359,13 +360,10 @@ def rfq_editor(request, code):
 
             if rfq_form.is_valid():
                 # ... update current material with the data provided
-                print(code)
 
                 creator = RFQCreator()
                 result = creator.editRFQ(rfq_form)
                 result_json = []
-
-                print(result)
 
                 for rfq in result:
                     result_json.append(json.dumps(rfq))
@@ -411,3 +409,86 @@ def rfq_editor(request, code):
                                                         'error_message': 'System error',
                                                         'instructions_title': instructions.getTitle(),
                                                         'instructions_steps': instructions.getSteps()})
+
+
+@login_required(login_url='/auth/login')
+def rfq_material_editor_test(request, code):
+    menu_texts = FrontendTexts('menu')
+    instructions = Instructions('rfqs', 'edit')
+    try:
+
+        backend_host = MachineConfigurator().getBackend()
+
+        r = requests.post(backend_host + '/auth/rfqs/' + code)
+
+        backend_message = BackendMessage(json.loads(r.text))
+
+        backend_result = json.loads(backend_message.getValue())
+
+        material_data = backend_result['materialList']
+
+        rfq_form = RFQFormOnlyinfo(initial=backend_result)
+
+        MaterialFormSet = formset_factory(ExtMaterialForm, extra=0)
+        materials_formset = MaterialFormSet(initial=material_data)
+
+        if request.method == 'POST':
+
+            rfq_form = RFQFormOnlyinfo(request.POST)
+
+            materials_formset = MaterialFormSet(request.POST)
+
+            if rfq_form.is_valid() and materials_formset.is_valid():
+                # ... update current material with the data provided
+                # ... send data to backend
+
+                creator = RFQCreator()
+                result = creator.editRFQwithMaterials(rfq_form, materials_formset)
+                result_json = []
+
+                for rfq in result:
+                    result_json.append(json.dumps(rfq))
+
+                r = requests.put(backend_host + '/auth/rfqs/' + code, json=result)
+
+                backend_message = BackendMessage(json.loads(r.text))
+
+                backend_result = json.loads(backend_message.getValue())
+
+                return render(request, 'rfqs/rfq_material_editor.html', {'menu_text': menu_texts.getComponent(),
+                                                                         'view_texts': view_texts.getComponent(),
+                                                                         'updated_materials': backend_result})
+
+        return render(request, 'rfqs/rfq_material_editor.html', {'menu_text': menu_texts.getComponent(),
+                                                                 'view_texts': view_texts.getComponent(),
+                                                                 'rfq_form': rfq_form,
+                                                                 'materials_formset': materials_formset,
+                                                                 'instructions_title': instructions.getTitle(),
+                                                                 'instructions_steps': instructions.getSteps()})
+
+    except ValueError as exception:
+        print("There is a problem with the backend return value")
+        print(exception)
+        return render(request, 'rfqs/rfq_material_editor.html', {'menu_text': menu_texts.getComponent(),
+                                                                 'view_texts': view_texts.getComponent(),
+                                                                 'error_message': 'No such RFQ exists in the DB: ' + code,
+                                                                 'instructions_title': instructions.getTitle(),
+                                                                 'instructions_steps': instructions.getSteps()})
+
+    except ConnectionError as exception:
+        print("Backend connection problem")
+        print(exception)
+        return render(request, 'rfqs/rfq_material_editor.html', {'menu_text': menu_texts.getComponent(),
+                                                                 'view_texts': view_texts.getComponent(),
+                                                                 'error_message': 'Backend connection problem',
+                                                                 'instructions_title': instructions.getTitle(),
+                                                                 'instructions_steps': instructions.getSteps()})
+
+    except Exception as exception:
+        print(exception)
+        return render(request, 'rfqs/rfq_material_editor.html', {'menu_text': menu_texts.getComponent(),
+                                                                 'view_texts': view_texts.getComponent(),
+                                                                 'error_message': 'System error',
+                                                                 'instructions_title': instructions.getTitle(),
+                                                                 'instructions_steps': instructions.getSteps()})
+

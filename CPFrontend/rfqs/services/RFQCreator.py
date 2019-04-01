@@ -231,3 +231,48 @@ class RFQCreator:
         except IOError as error:
             print(error)
             return self.rfq_list
+
+    def editRFQwithMaterials(self, form, material_formset):
+        try:
+            internalCode = form.cleaned_data['internalCode']
+            externalCode = form.cleaned_data['externalCode']
+            sender = form.cleaned_data['sender']
+            company = form.cleaned_data['company']
+            receivedDate = form.cleaned_data['receivedDate']
+            note = form.cleaned_data['note']
+
+            rfq = RequestForQuotes()
+            rfq.setIntenalCode(internalCode)
+            rfq.setExternalCode(externalCode)
+            rfq.setSender(sender)
+            rfq.setCompany(company)
+            rfq.setReceivedDate(receivedDate)
+            rfq.setNote(note)
+
+            extmaterials = []
+
+            try:
+                for material in material_formset:
+                    temp_material = Material()
+                    temp_material.setItemCode(material.cleaned_data['itemcode'])
+                    mod_material = ExtMaterials(temp_material)
+                    mod_material.setOrderNumber(material.cleaned_data['orderNumber'])
+                    mod_material.setQuantity(material.cleaned_data['quantity'])
+                    mod_material.setUnit(material.cleaned_data['unit'])
+                    extmaterials.append(mod_material)
+
+            except Exception as ex:
+                print(ex)
+
+            rfq.setMaterialList(extmaterials)
+
+            rfq_json = rfq.__dict__
+            rfq_json['materialList'] = rfq.to_json()
+
+            self.rfq_list.append(rfq_json)
+
+            return self.rfq_list
+
+        except IOError as error:
+            print(error)
+            return self.rfq_list

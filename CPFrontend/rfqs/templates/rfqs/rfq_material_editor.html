@@ -21,7 +21,7 @@
     <form action="" method="POST">
     {% csrf_token %}
 
-    {% for hidden in rfq.hidden_fields %}
+    {% for hidden in rfq_form.hidden_fields %}
         {{ hidden }}
     {% endfor %}
 
@@ -32,8 +32,35 @@
             {% for error in field.errors %}
               <span class="help-block">{{ error }}</span>
             {% endfor %}
-          </div>
-        {% endfor %}
+
+     {% endfor %}
+
+      <label for="materials_list">Material list</label>
+
+        <table class="table table-dark">
+          <thead>
+            <tr>
+                <th scope="col">Order No</th>
+                <th scope="col">Itemcode</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Unit</th>
+            </tr>
+          </thead>
+        <tbody>
+            <tr>
+            {{ materials_formset.management_form }}
+            {% for material_form in materials_formset %}
+            <tr>
+                <td>{{ material_form.orderNumber | add_class:'form-control'}}</td>
+                <td>{{ material_form.itemcode | add_class:'form-control'}}</td>
+                <td>{{ material_form.quantity | add_class:'form-control'}}</td>
+                <td>{{ material_form.unit |add_class:'form-control'}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+
+    </div>
 
     <button type="submit" class="btn btn-success">{{view_texts.editor.submit}}</button>
 
@@ -47,8 +74,8 @@
       <table class="table table-dark">
           <thead>
             <tr>
-                <th scope="col">Code</th>
-                <th scope="col">Description</th>
+                <th scope="col">Project code</th>
+                <th scope="col">Request code</th>
                 <th scope="col">Status</th>
             </tr>
           </thead>
@@ -56,7 +83,7 @@
             <tr>
             {% for material in updated_materials %}
             <tr>
-                <td>{{ material.itemcode }}</td> <td>{{ material.description }}</td> <td>{{ material.status }}</td>
+                <td>{{ material.internalCode }}</td> <td>{{ material.externalCode }}</td> <td>{{ material.status }}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -79,3 +106,4 @@
 </div>
 
 {% endblock %}
+

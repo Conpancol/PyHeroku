@@ -26,6 +26,13 @@ class RFQFormOnlyinfo(forms.ModelForm):
                   'note')
 
 
+class ExtMaterialForm(forms.Form):
+    orderNumber = forms.CharField(max_length=255)
+    itemcode = forms.CharField(max_length=255)
+    quantity = forms.FloatField()
+    unit = forms.CharField(max_length=255)
+
+
 class RFQInternalCode(forms.Form):
     internalcode = forms.CharField(max_length=50)
     incoterms = forms.ChoiceField(choices=INCOTERMS_CHOICES, label="Incoterms", initial='', widget=forms.Select(),
