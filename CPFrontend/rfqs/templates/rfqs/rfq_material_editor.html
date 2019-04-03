@@ -69,6 +69,7 @@
     {% endif %}
 
    <div class="content-items">
+
       {% if updated_materials %}
 
       <table class="table table-dark">
@@ -80,7 +81,6 @@
             </tr>
           </thead>
         <tbody>
-            <tr>
             {% for material in updated_materials %}
             <tr>
                 <td>{{ material.internalCode }}</td> <td>{{ material.externalCode }}</td> <td>{{ material.status }}</td>
@@ -89,7 +89,7 @@
         </tbody>
       </table>
 
-       <a href="/rfqs/manage" class="btn btn-success" role="button">Back</a>
+       <a href="/rfqs/manage" class="btn btn-success" role="button">{{view_texts.editor.back}}</a>
 
   {% endif %}
 
@@ -97,6 +97,7 @@
 
       {% if error_message %}
           <p> {{ error_message }} </p>
+          <p><a href="/rfqs/manage" class="btn btn-success" role="button">{{view_texts.editor.back}}</a></p>
       {% endif %}
 
       {% block instructions %}

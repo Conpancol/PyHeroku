@@ -9,6 +9,10 @@ class ExtMaterials(Material):
         self.unit = "EA"
         self.quantity = 1.0
         self.setItemCode(material.getItemCode())
+        self.setDescription(material.getDescription())
+        self.setType(material.getType())
+        self.setCategory(material.getCategory())
+        self.setDimensions(material.getDimensions())
 
     def setOrderNumber(self, orderNum):
         self.orderNumber = orderNum

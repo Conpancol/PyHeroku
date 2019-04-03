@@ -52,7 +52,7 @@
         "text" : "Edita las entradas de una RFQ en la DB"
       },
       "steps": {
-        "1": "Llenar el formulario con la información necesaria",
+        "1": "Llenar el formulario con la información que requiera cambiar",
         "2": "Enviar"
       }
     }

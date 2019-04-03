@@ -68,6 +68,7 @@
 
       {% if error_message %}
           <p> {{ error_message }} </p>
+          <p><a href="/providers/create" class="btn btn-success" role="button">{{view_texts.editor.back}}</a></p>
       {% endif %}
 
       {% block instructions %}

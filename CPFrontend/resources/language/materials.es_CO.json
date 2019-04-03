@@ -3,29 +3,35 @@
     "simple_upload" : {
       "main_title" : "Subir nuevo listado de materiales mediante archivo",
       "submit": "Enviar",
-      "main_title_result" : "Nuevos materiales - resultado"
+      "main_title_result" : "Nuevos materiales - resultado",
+      "back" : "Atras"
     },
     "singlexcheck" : {
       "main_title" : "Verificación de materiales",
       "sub_title" : "Indique el código de un material a buscar",
-      "submit": "Enviar"
+      "submit": "Enviar",
+      "back" : "Atras"
     },
     "multiplexcheck" : {
       "main_title" : "Verificación de materiales",
       "sub_title" : "Suba el archivo que contiene el listado de materiales",
-      "submit": "Enviar"
+      "submit": "Enviar",
+      "back" : "Atras"
     },
     "selector" : {
       "main_title" : "Seleccione el material a gestionar y la herramienta",
-      "submit": "Enviar"
+      "submit": "Enviar",
+      "back" : "Atras"
     },
     "weightcalc" : {
       "main_title" : "Cálculo del peso teórico del material seleccionado",
-      "submit": "Enviar"
+      "submit": "Enviar",
+      "back" : "Atras"
     },
     "editor" : {
       "main_title" : "Edite la información del material seleccionado",
-      "submit": "Enviar"
+      "submit": "Enviar",
+      "back" : "Atras"
     }
   }
 }

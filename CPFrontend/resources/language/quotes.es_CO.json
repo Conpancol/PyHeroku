@@ -2,7 +2,8 @@
   "quotes" : {
     "simple_upload" : {
       "main_title" : "Adicione una nueva cotización",
-      "submit": "Enviar"
+      "submit": "Enviar",
+      "back" : "Atras"
     }
   }
 }

@@ -2,27 +2,33 @@
   "providers" : {
     "simple_upload" : {
       "main_title" : "Subir datos de nuevo proveedor(es) mediante archivo",
-      "submit": "Enviar"
+      "submit": "Enviar",
+      "back" : "Atras"
     },
     "selector" : {
       "main_title" : "Seleccione el proveedor a modificar",
-      "submit": "Enviar"
+      "submit": "Enviar",
+      "back" : "Atras"
     },
     "editor" : {
       "main_title" : "Edite la información del proveedor seleccionado",
-      "submit": "Enviar"
+      "submit": "Enviar",
+      "back" : "Atras"
     },
     "creator" : {
       "main_title" : "Cree un nuevo proveedor",
-      "submit": "Enviar"
+      "submit": "Enviar",
+      "back" : "Atras"
     },
     "comment" : {
       "main_title" : "Adicione un comentario al proveedor seleccionado",
-      "submit": "Enviar"
+      "submit": "Enviar",
+      "back" : "Atras"
     },
     "listall" : {
       "main_title" : "Listado de todos los proveedores",
-      "submit": "Enviar"
+      "submit": "Enviar",
+      "back" : "Atras"
     }
   }
 }

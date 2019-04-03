@@ -75,7 +75,7 @@ class RFQCreator:
         labels.append('Type')
         labels.append('Quantity')
         labels.append('Unit')
-        #   labels.append('# Plates')
+        labels.append('# Plates')
         #   labels.append('History')
 
         internal_code = str(rfq["internalCode" ])
@@ -116,7 +116,6 @@ class RFQCreator:
                     if item["category"] == "PLATE":
                         nplates = self.getNumberPlates(item["dimensions"], item["quantity"])
                         rwo.append(str(nplates))
-                        rwo.append('PC')
 
                     writer.writerow(rwo)
                     id += 1
@@ -206,33 +205,7 @@ class RFQCreator:
         except IOError as error:
             print(error)
 
-    def editRFQ(self, form):
-        try:
-            internalCode = form.cleaned_data['internalCode']
-            externalCode = form.cleaned_data['externalCode']
-            sender = form.cleaned_data['sender']
-            company = form.cleaned_data['company']
-            receivedDate = form.cleaned_data['receivedDate']
-            note = form.cleaned_data['note']
-
-            rfq = RequestForQuotes()
-            rfq.setIntenalCode(internalCode)
-            rfq.setExternalCode(externalCode)
-            rfq.setSender(sender)
-            rfq.setCompany(company)
-            rfq.setReceivedDate(receivedDate)
-            rfq.setNote(note)
-
-            obj_id = rfq.__dict__
-            self.rfq_list.append(obj_id)
-
-            return self.rfq_list
-
-        except IOError as error:
-            print(error)
-            return self.rfq_list
-
-    def editRFQwithMaterials(self, form, material_formset):
+    def editRFQwithMaterials(self, form, material_formset, material_data):
         try:
             internalCode = form.cleaned_data['internalCode']
             externalCode = form.cleaned_data['externalCode']
@@ -252,14 +225,30 @@ class RFQCreator:
             extmaterials = []
 
             try:
+                idx = 0
                 for material in material_formset:
+
+                    itemcode_data = material_data[idx]['itemcode']
+                    description_data = material_data[idx]['description']
+                    type_data = material_data[idx]['type']
+                    dimensions_data = material_data[idx]['dimensions']
+                    category_data = material_data[idx]['category']
+
+                    order_number_data = material_data[idx]['orderNumber']
+
                     temp_material = Material()
-                    temp_material.setItemCode(material.cleaned_data['itemcode'])
+                    temp_material.setItemCode(itemcode_data)
+                    temp_material.setDescription(description_data)
+                    temp_material.setType(type_data)
+                    temp_material.setDimensions(dimensions_data)
+                    temp_material.setCategory(category_data)
+
                     mod_material = ExtMaterials(temp_material)
-                    mod_material.setOrderNumber(material.cleaned_data['orderNumber'])
+                    mod_material.setOrderNumber(order_number_data)
                     mod_material.setQuantity(material.cleaned_data['quantity'])
                     mod_material.setUnit(material.cleaned_data['unit'])
                     extmaterials.append(mod_material)
+                    idx = idx + 1
 
             except Exception as ex:
                 print(ex)
