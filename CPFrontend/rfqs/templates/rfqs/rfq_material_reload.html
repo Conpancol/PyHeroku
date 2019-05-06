@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% load static %}
+
+{% block menu %}
+
+{% include "navbar.html" %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="content">
+
+  <h2>{{view_texts.material_reload.main_title}}</h2>
+
+   <div class="content-items">
+
+      {% if updated_materials %}
+
+      <table class="table table-dark">
+          <thead>
+            <tr>
+                <th scope="col">Project code</th>
+                <th scope="col">Request code</th>
+                <th scope="col">Status</th>
+            </tr>
+          </thead>
+        <tbody>
+            {% for material in updated_materials %}
+            <tr>
+                <td>{{ material.internalCode }}</td> <td>{{ material.externalCode }}</td> <td>{{ material.status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+
+       <a href="/rfqs/manage" class="btn btn-success" role="button">{{view_texts.material_reload.back}}</a>
+
+  {% endif %}
+
+   </div>
+
+      {% if error_message %}
+          <p> {{ error_message }} </p>
+          <p><a href="/rfqs/manage" class="btn btn-success" role="button">{{view_texts.material_reload.back}}</a></p>
+      {% endif %}
+
+      {% block instructions %}
+        {% include "instructions.html" %}
+      {% endblock %}
+
+</div>
+
+{% endblock %}
+

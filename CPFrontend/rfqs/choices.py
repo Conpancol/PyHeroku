@@ -8,4 +8,5 @@ INCOTERMS_CHOICES = (
 ACTION_CHOICES = (
     (1, "Edit"),
     (2, "Reload materials"),
+    (3, "Run basic analysis")
 )

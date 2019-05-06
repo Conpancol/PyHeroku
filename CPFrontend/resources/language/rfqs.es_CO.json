@@ -33,6 +33,18 @@
       "main_result_title" : "Actualización del material - resultado",
       "submit": "Enviar",
       "back" : "Atras"
+    },
+    "material_reload" : {
+      "main_title" : "Actualización del listado de materiales",
+      "main_result_title" : "Actualización de materiales - resultado",
+      "submit": "Enviar",
+      "back" : "Atras"
+    },
+    "basic_analyzer" : {
+      "main_title" : "Ejecución de un análisis simple sobre la RFQ seleccionada",
+      "main_result_title" : "Analisis simple - resultado",
+      "submit": "Enviar",
+      "back" : "Atras"
     }
   }
 }

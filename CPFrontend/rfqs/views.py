@@ -302,6 +302,10 @@ def rfq_manager(request):
 
                 if action == '1':
                     return redirect('edit/' + code)
+                elif action == '2':
+                    return redirect('material_reload/' + code)
+                elif action == '3':
+                    return redirect('analyze/' + code)
 
         else:
             selector_form = SelectorForm()
@@ -422,3 +426,111 @@ def rfq_material_editor_test(request, code):
                                                                  'instructions_title': instructions.getTitle(),
                                                                  'instructions_steps': instructions.getSteps()})
 
+
+@login_required(login_url='/auth/login')
+def rfq_material_reload(request, code):
+    menu_texts = FrontendTexts('menu')
+    instructions = Instructions('rfqs', 'reload')
+    try:
+
+        backend_host = MachineConfigurator().getBackend()
+
+        r = requests.put(backend_host + '/auth/rfqs/reload/' + code, json={})
+
+        backend_message = BackendMessage(json.loads(r.text))
+
+        backend_result = json.loads(backend_message.getValue())
+
+        return render(request, 'rfqs/rfq_material_reload.html', {'menu_text': menu_texts.getComponent(),
+                                                                 'view_texts': view_texts.getComponent(),
+                                                                 'updated_materials': backend_result})
+
+    except ValueError as exception:
+        print("There is a problem with the backend return value")
+        print(exception)
+        return render(request, 'rfqs/rfq_material_reload.html', {'menu_text': menu_texts.getComponent(),
+                                                                 'view_texts': view_texts.getComponent(),
+                                                                 'error_message': 'No such RFQ exists in the DB: ' + code,
+                                                                 'instructions_title': instructions.getTitle(),
+                                                                 'instructions_steps': instructions.getSteps()})
+
+    except ConnectionError as exception:
+        print("Backend connection problem")
+        print(exception)
+        return render(request, 'rfqs/rfq_material_reload.html', {'menu_text': menu_texts.getComponent(),
+                                                                 'view_texts': view_texts.getComponent(),
+                                                                 'error_message': 'Backend connection problem',
+                                                                 'instructions_title': instructions.getTitle(),
+                                                                 'instructions_steps': instructions.getSteps()})
+
+    except Exception as exception:
+        print(exception)
+        return render(request, 'rfqs/rfq_material_reload.html', {'menu_text': menu_texts.getComponent(),
+                                                                 'view_texts': view_texts.getComponent(),
+                                                                 'error_message': 'System error',
+                                                                 'instructions_title': instructions.getTitle(),
+                                                                 'instructions_steps': instructions.getSteps()})
+
+
+@login_required(login_url='/auth/login')
+def rfq_basic_analyzer(request, code):
+    menu_texts = FrontendTexts('menu')
+    instructions = Instructions('rfqs', 'analyze')
+    output_file = ''
+    try:
+
+        backend_host = MachineConfigurator().getBackend()
+
+        r = requests.get(backend_host + '/auth/rfqs/analysis/' + code)
+
+        backend_message = BackendMessage(json.loads(r.text))
+
+        if not backend_message.getErrorInd():
+
+            rfq = json.loads(backend_message.getValue())
+            rfq_service = RFQCreator()
+            output_file = rfq_service.runBasicAnalysis(rfq)
+
+            if os.path.exists(output_file):
+                with open(output_file, 'rb') as fh:
+                    response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+                cleanup('/' + output_file)
+                response['Content-Disposition'] = 'inline; filename=' + os.path.basename(output_file)
+                return response
+            raise Http404
+
+        return render(request, 'rfqs/rfq_basic_analysis.html', {'menu_text': menu_texts.getComponent(),
+                                                                'view_texts': view_texts.getComponent(),
+                                                                'error_message': 'Backend problem - cannot create file',
+                                                                'instructions_title': instructions.getTitle(),
+                                                                'instructions_steps': instructions.getSteps()})
+
+    except ValueError as exception:
+        print("There is a problem with the backend return value")
+        print(exception)
+        return render(request, 'rfqs/rfq_basic_analysis.html', {'menu_text': menu_texts.getComponent(),
+                                                                'view_texts': view_texts.getComponent(),
+                                                                'error_message': 'Backend problem',
+                                                                'instructions_title': instructions.getTitle(),
+                                                                'instructions_steps': instructions.getSteps()
+                                                                })
+
+    except ConnectionError as exception:
+        print("There is a problem with the backend return value")
+        print(exception)
+        return render(request, 'rfqs/rfq_basic_analysis.html', {'menu_text': menu_texts.getComponent(),
+                                                                'view_texts': view_texts.getComponent(),
+                                                                'error_message': 'Backend connection problem',
+                                                                'instructions_title': instructions.getTitle(),
+                                                                'instructions_steps': instructions.getSteps()
+                                                                })
+
+    except Exception as exception:
+        cleanup(output_file)
+        print(exception)
+        return render(request, 'rfqs/rfq_basic_analysis.html', {'menu_text': menu_texts.getComponent(),
+                                                                'view_texts': view_texts.getComponent(),
+                                                                'error_message': "Frontend Error",
+                                                                'instructions_title': instructions.getTitle(),
+                                                                'instructions_steps': instructions.getSteps()
+                                                                })

@@ -55,5 +55,26 @@
         "1": "Llenar el formulario con la información que requiera cambiar",
         "2": "Enviar"
       }
+    },
+  "reload" :
+    {
+      "title": {
+        "label": "Instrucciones",
+        "text" : "Actualización de las propiedades de materiales presentes en la RFQ"
+      },
+      "steps": {
+        "1": "No requiere de ninguna acción"
+      }
+    },
+  "analyze" :
+    {
+      "title": {
+        "label": "Instrucciones",
+        "text" : "Retorna la RFQ organizada por tipo de material y analiza si hay proyectos anteriores"
+      },
+      "steps": {
+        "1": "No requiere de ninguna acción",
+        "2": "Retorna un archivo CSV editable en Excel"
+      }
     }
 }

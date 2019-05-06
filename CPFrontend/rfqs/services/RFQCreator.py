@@ -265,3 +265,69 @@ class RFQCreator:
         except IOError as error:
             print(error)
             return self.rfq_list
+
+    def runBasicAnalysis(self, rfq):
+
+        labels = []
+        labels.append('Id')
+        labels.append('OrderId')
+        labels.append('ItemId')
+        labels.append('Description')
+        labels.append('Type')
+        labels.append('Quantity')
+        labels.append('Unit')
+        labels.append('# Plates')
+        labels.append('History')
+
+        internal_code = str(rfq["internalCode"])
+        csvfile = 'RFQ-WAnalysis-' + internal_code + '_Conpancol.csv'
+        path = "media/export/" + csvfile
+
+        try:
+
+            with open(path, 'w', encoding='utf-8', newline='') as f:
+                writer = csv.writer(f, dialect="excel", delimiter=';')
+                header = 'RFQ internal code: ' + str(rfq["internalCode"])
+                writer.writerow([header])
+                details = 'Received date: ' + str(rfq["receivedDate"])
+                writer.writerow([details])
+                note = 'Note: ' + str(rfq["note"])
+
+                writer.writerow([note])
+                writer.writerow([''])
+                labels_rwo = '\t'.join(labels)
+                print(labels_rwo)
+                writer.writerow(labels)
+
+                items = rfq["materialList"]
+
+                id = 1
+
+                for item in items:
+                    rwo = []
+                    rwo.append(str(id))
+                    rwo.append(item["orderNumber"])
+                    rwo.append(item["itemcode"])
+                    description = item["description"]
+                    rwo.append(description)
+                    rwo.append(item["type"])
+                    rwo.append(str(item["quantity"]))
+                    rwo.append(str(item["unit"]))
+
+                    if item["category"] == "PLATE":
+                        nplates = self.getNumberPlates(item["dimensions"], item["quantity"])
+                        rwo.append(str(nplates))
+
+                    writer.writerow(rwo)
+                    id += 1
+
+            f.close()
+            return path
+
+        except IOError:
+            logging.info('Problem with file creation')
+            return path
+
+        except Exception as e:
+            logging.info('General exception' + str(e))
+            return path
