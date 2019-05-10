@@ -4,6 +4,7 @@ import logging
 import re
 
 from .RequestForQuotes import *
+from .RFQTools import RFQTools
 
 from common.Materials import Material
 from common.ExtMaterials import ExtMaterials
@@ -63,7 +64,7 @@ class RFQCreator:
             return rfq_json
 
         except IOError as error:
-            print(error)
+            logging.info(error)
 
     def exportRFQtoCSV(self, rfq, terms, port):
 
@@ -76,7 +77,6 @@ class RFQCreator:
         labels.append('Quantity')
         labels.append('Unit')
         labels.append('# Plates')
-        #   labels.append('History')
 
         internal_code = str(rfq["internalCode" ])
         csvfile = 'RFQ-' + internal_code + '_Conpancol.csv'
@@ -94,8 +94,6 @@ class RFQCreator:
 
                 writer.writerow([note])
                 writer.writerow([''])
-                labels_rwo = '\t'.join(labels)
-                print(labels_rwo)
                 writer.writerow(labels)
 
                 items = rfq["materialList"]
@@ -103,21 +101,21 @@ class RFQCreator:
                 id = 1
 
                 for item in items:
-                    rwo = []
-                    rwo.append(str(id))
-                    rwo.append(item["orderNumber"])
-                    rwo.append(item["itemcode"])
+                    row = []
+                    row.append(str(id))
+                    row.append(item["orderNumber"])
+                    row.append(item["itemcode"])
                     description = item["description"]
-                    rwo.append(description)
-                    rwo.append(item["type"])
-                    rwo.append(str(item["quantity"]))
-                    rwo.append(str(item["unit"]))
+                    row.append(description)
+                    row.append(item["type"])
+                    row.append(str(item["quantity"]))
+                    row.append(str(item["unit"]))
 
                     if item["category"] == "PLATE":
                         nplates = self.getNumberPlates(item["dimensions"], item["quantity"])
-                        rwo.append(str(nplates))
+                        row.append(str(nplates))
 
-                    writer.writerow(rwo)
+                    writer.writerow(row)
                     id += 1
 
                 for i in range(1, 3):
@@ -125,7 +123,6 @@ class RFQCreator:
                 bottom_txt_file = open('./resources/inputs/Bottom_conditions_EN.txt', 'r')
                 bottom_txt_rows = bottom_txt_file.readlines()
                 incoterms = INCOTERMS_CHOICES[int(terms)-1][1]
-                print(incoterms)
                 for line in bottom_txt_rows:
                     row = line.replace('\n', ' ')
                     row = row.replace('###INCOTERMS###', incoterms)
@@ -165,10 +162,11 @@ class RFQCreator:
 
                         area = dim_values[0] * dim_values[1] * 0.000001
                         nplates = format(total_area / area, '.2f')
-                        print(dim_values, total_area, nplates)
+                        result = str(dim_values) + str(total_area) + str(nplates)
+                        logging.info(result)
         except Exception as e:
-            print("There is a problem with your dimensions")
-            print(e)
+            logging.info("There is a problem with your dimensions")
+            logging.info(e)
 
         return nplates
 
@@ -203,7 +201,7 @@ class RFQCreator:
             return rfq_json['materialList']
 
         except IOError as error:
-            print(error)
+            logging.info(error)
 
     def editRFQwithMaterials(self, form, material_formset, material_data):
         try:
@@ -251,7 +249,7 @@ class RFQCreator:
                     idx = idx + 1
 
             except Exception as ex:
-                print(ex)
+                logging.info(ex)
 
             rfq.setMaterialList(extmaterials)
 
@@ -263,7 +261,7 @@ class RFQCreator:
             return self.rfq_list
 
         except IOError as error:
-            print(error)
+            logging.info(error)
             return self.rfq_list
 
     def runBasicAnalysis(self, rfq):
@@ -295,30 +293,38 @@ class RFQCreator:
 
                 writer.writerow([note])
                 writer.writerow([''])
-                labels_rwo = '\t'.join(labels)
-                print(labels_rwo)
                 writer.writerow(labels)
 
                 items = rfq["materialList"]
 
+                tools = RFQTools()
+                item_history = tools.RFQMatcherContext(rfq["internalCode"])
+
                 id = 1
 
                 for item in items:
-                    rwo = []
-                    rwo.append(str(id))
-                    rwo.append(item["orderNumber"])
-                    rwo.append(item["itemcode"])
+                    row = []
+                    row.append(str(id))
+                    row.append(item["orderNumber"])
+                    row.append(item["itemcode"])
                     description = item["description"]
-                    rwo.append(description)
-                    rwo.append(item["type"])
-                    rwo.append(str(item["quantity"]))
-                    rwo.append(str(item["unit"]))
+                    row.append(description)
+                    row.append(item["type"])
+                    row.append(str(item["quantity"]))
+                    row.append(str(item["unit"]))
 
                     if item["category"] == "PLATE":
                         nplates = self.getNumberPlates(item["dimensions"], item["quantity"])
-                        rwo.append(str(nplates))
+                        row.append(str(nplates))
+                    else:
+                        row.append("-")
 
-                    writer.writerow(rwo)
+                    if len(item_history) != 0:
+                        row.append(item_history[item["itemcode"]])
+                    else:
+                        row.append("-")
+
+                    writer.writerow(row)
                     id += 1
 
             f.close()
