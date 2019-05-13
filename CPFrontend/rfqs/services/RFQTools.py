@@ -62,7 +62,8 @@ class RFQTools:
                     code = item['itemcode']
                     for key, value in itemcodes.items():
                         if key == code:
-                            itemcodes[key] = value + str(internalCode) + ' '
+                            if itemcodes[key].find(value) < 0:
+                                itemcodes[key] = value + str(internalCode) + ' '
 
             for key, value in itemcodes.items():
                 row = str(key) + '\t' + value
