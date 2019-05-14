@@ -39,14 +39,14 @@ class ExtMaterialForm(forms.Form):
 
 
 class RFQInternalCode(forms.Form):
-    labels = view_texts.getComponent()['simple_upload']['labels']
-    internalcode = forms.CharField(max_length=50)
+    labels = view_texts.getComponent()['export']['labels']
+    internalcode = forms.CharField(max_length=50, label=labels['internalCode'])
     incoterms = forms.ChoiceField(choices=INCOTERMS_CHOICES,
-                                  label="Incoterms",
+                                  label=labels['incoterms'],
                                   initial='',
                                   widget=forms.Select(),
                                   required=True)
-    port = forms.CharField(max_length=50)
+    port = forms.CharField(max_length=50, label=labels['port'])
 
 
 class SelectorForm(forms.Form):

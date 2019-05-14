@@ -18,7 +18,12 @@
       "main_title" : "Busca y exporta una RFQ existente",
       "sub_title" : "Indique el código interno",
       "submit": "Enviar",
-      "back" : "Atras"
+      "back" : "Atras",
+      "labels": {
+        "internalCode": "Código interno",
+        "incoterms": "Incoterms",
+        "port": "Puerto"
+      }
     },
     "qfinder" : {
       "main_title" : "Buscador de elementos cotizados anteriormente",
