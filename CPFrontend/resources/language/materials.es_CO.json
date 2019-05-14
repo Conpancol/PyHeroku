@@ -10,7 +10,10 @@
       "main_title" : "Verificación de materiales",
       "sub_title" : "Indique el código de un material a buscar",
       "submit": "Enviar",
-      "back" : "Atras"
+      "back" : "Atras",
+      "labels": {
+        "code": "Código material"
+      }
     },
     "multiplexcheck" : {
       "main_title" : "Verificación de materiales",
@@ -21,17 +24,36 @@
     "selector" : {
       "main_title" : "Seleccione el material a gestionar y la herramienta",
       "submit": "Enviar",
-      "back" : "Atras"
+      "back" : "Atras",
+      "labels": {
+        "code": "Código material",
+        "action": "Acción"
+      },
+      "choices": {
+        "edit": "Editar",
+        "weight": "Calculadora de pesos"
+      }
     },
     "weightcalc" : {
       "main_title" : "Cálculo del peso teórico del material seleccionado",
       "submit": "Enviar",
-      "back" : "Atras"
+      "back" : "Atras",
+      "labels": {
+        "value": "Valor",
+        "units": "Unidad"
+      }
     },
     "editor" : {
       "main_title" : "Edite la información del material seleccionado",
       "submit": "Enviar",
-      "back" : "Atras"
+      "back" : "Atras",
+      "labels": {
+        "itemcode": "Código material",
+        "description": "Descripción",
+        "type": "Tipo",
+        "category": "Categoria",
+        "dimensions": "Dimensiones"
+      }
     }
   }
 }

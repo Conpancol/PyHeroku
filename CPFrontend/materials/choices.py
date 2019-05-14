@@ -1,6 +1,11 @@
+from common.FrontendTexts import FrontendTexts
+
+view_texts = FrontendTexts('materials')
+labels = view_texts.getComponent()['selector']['choices']
+
 ACTION_CHOICES = (
-    (1, "Edit"),
-    (2, "Weight Calculator")
+    (1, labels['edit']),
+    (2, labels['weight'])
 )
 
 UNIT_CHOICES = (

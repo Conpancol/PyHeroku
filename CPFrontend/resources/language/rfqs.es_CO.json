@@ -3,7 +3,16 @@
     "simple_upload" : {
       "main_title" : "Subir una nueva RFQ mediante archivo",
       "submit": "Enviar",
-      "back" : "Atras"
+      "back" : "Atras",
+      "labels" : {
+        "internalCode": "Código interno",
+        "externalCode": "Código externo",
+        "sender": "Enviado por",
+        "company": "Compañia",
+        "receivedDate": "Fecha recibido",
+        "note": "Anotación",
+        "document": "Documento"
+      }
     },
     "export" : {
       "main_title" : "Busca y exporta una RFQ existente",
@@ -20,7 +29,16 @@
     "selector" : {
       "main_title" : "Seleccione la RFQ por código interno y la herramienta",
       "submit": "Enviar",
-      "back" : "Atras"
+      "back" : "Atras",
+      "labels" : {
+        "internalCode": "Código interno",
+        "action": "Acción"
+      },
+      "choices" : {
+        "edit": "Editar",
+        "reload": "Actualizar materiales",
+        "basic_analyzer": "Ejecutar histórico"
+      }
     },
     "editor" : {
       "main_title" : "Edite la información de la RFQ seleccionada",

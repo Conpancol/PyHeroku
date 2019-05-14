@@ -8,7 +8,15 @@
     "selector" : {
       "main_title" : "Seleccione el proveedor a modificar",
       "submit": "Enviar",
-      "back" : "Atras"
+      "back" : "Atras",
+      "labels": {
+        "code": "Código",
+        "action": "Acción"
+      },
+      "choices": {
+        "edit": "Editar",
+        "comment": "Comentar"
+      }
     },
     "editor" : {
       "main_title" : "Edite la información del proveedor seleccionado",
@@ -18,17 +26,45 @@
     "creator" : {
       "main_title" : "Cree un nuevo proveedor",
       "submit": "Enviar",
-      "back" : "Atras"
+      "back" : "Atras",
+      "labels": {
+        "name": "Nombre",
+        "category": "Categoria",
+        "specialty": "Especialidad",
+        "webpage": "Página web",
+        "contactNames": "Nombre contactos",
+        "emailAddresses": "Direcciones email",
+        "address": "Dirección",
+        "country": "Pais",
+        "city": "Ciudad",
+        "phone": "Telefono",
+        "taxId": "Id impuestos",
+        "coordinates": "Coordenadas"
+      },
+      "choices": {
+        "materials": "MATERIALS",
+        "transporters": "TRANSPORTERS"
+      }
     },
     "comment" : {
       "main_title" : "Adicione un comentario al proveedor seleccionado",
       "submit": "Enviar",
-      "back" : "Atras"
+      "back" : "Atras",
+      "labels": {
+        "date": "Fecha",
+        "issuer": "Autor",
+        "text": "Comentario"
+      }
     },
     "listall" : {
       "main_title" : "Listado de todos los proveedores",
       "submit": "Enviar",
       "back" : "Atras"
+    },
+    "finder": {
+      "labels": {
+        "code": "Código"
+      }
     }
   }
 }
