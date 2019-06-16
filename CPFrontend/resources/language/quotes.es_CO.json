@@ -3,7 +3,33 @@
     "simple_upload" : {
       "main_title" : "Adicione una nueva cotización",
       "submit": "Enviar",
-      "back" : "Atras"
+      "back" : "Atras",
+      "labels" : {
+        "internalCode": "Código interno",
+        "externalCode": "Código externo",
+        "providerCode": "Codigo proveedor",
+        "receivedDate": "Fecha recibido",
+        "sentDate": "Fecha enviado",
+        "user": "Usuario",
+        "providerId": "ID del proveedor",
+        "providerName": "Nombre del proveedor",
+        "contactName": "Nombre contacto",
+        "incoterms": "Incoterms",
+        "note": "Nota",
+        "edt": "Tiempo estimado de despacho (EDT)",
+        "document": "Documento"
+      }
+    },
+    "materials_upload": {
+      "main_title" : "Suba una actualización de materiales cotizados",
+      "submit": "Enviar",
+      "back" : "Atras",
+      "labels" : {
+        "providerId": "ID del proveedor",
+        "providerName": "Nombre del proveedor",
+        "revision": "Revisión",
+        "document": "Documento"
+      }
     }
   }
 }

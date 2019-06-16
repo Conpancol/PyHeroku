@@ -12,22 +12,18 @@
 
 {% block content %}
 
-<div class="content">
+  <div class="content">
+  {% if form %}
+  <h2>{{view_texts.materials_upload.main_title}}</h2>
 
-  <h2>{{view_texts.singlexcheck.main_title}}</h2>
-
-  {% if xform %}
-
-  <h4>{{view_texts.singlexcheck.sub_title}}</h4>
-
-   <form action="" method="POST">
+  <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
 
-    {% for hidden in xform.hidden_fields %}
+      {% for hidden in form.hidden_fields %}
         {{ hidden }}
-    {% endfor %}
+      {% endfor %}
 
-    {% for field in xform.visible_fields %}
+        {% for field in form.visible_fields %}
           <div class="form-group">
             <label for="{{ field.id_for_label }}">{{ field.label }}</label>
             {{ field |add_class:'form-control'}}
@@ -36,40 +32,45 @@
             {% endfor %}
           </div>
         {% endfor %}
-    <button type="submit" class="btn btn-success">{{view_texts.singlexcheck.submit}}</button>
-   </form>
 
-   {% endif %}
+    <button type="submit" class="btn btn-success">{{view_texts.materials_upload.submit}}</button>
+  </form>
+
+  {% endif %}
 
   <div class="content-items">
-  {% if uploaded_materials %}
+  {% if upload_result %}
+
+      <h2>{{view_texts.materials_upload.main_title}}</h2>
 
       <table class="table table-dark">
           <thead>
             <tr>
                 <th scope="col">Itemcode</th>
-                <th scope="col">Description</th>
+                <th scope="col">Revision</th>
                 <th scope="col">Status</th>
             </tr>
           </thead>
         <tbody>
             <tr>
-            {% for material in uploaded_materials %}
+            {% for material in upload_result %}
             <tr>
                 <td>{{ material.itemcode }}</td>
-                <td>{{ material.description }}</td>
+                <td>{{ material.revision }}</td>
                 <td>{{ material.status }}</td>
             </tr>
             {% endfor %}
         </tbody>
       </table>
-       <p><a href="." class="btn btn-success" role="button">{{view_texts.editor.back}}</a></p>
+
+    <p><a href="." class="btn btn-success" role="button">{{view_texts.materials_upload.back}}</a></p>
   {% endif %}
+
   </div>
 
   {% if error_message %}
       <p> {{ error_message }} </p>
-      <p><a href="." class="btn btn-success" role="button">{{view_texts.editor.back}}</a></p>
+      <p><a href="." class="btn btn-success" role="button">{{view_texts.materials_upload.back}}</a></p>
   {% endif %}
 
   {% block instructions %}

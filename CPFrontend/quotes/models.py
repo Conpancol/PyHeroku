@@ -16,3 +16,9 @@ class Quote(models.Model):
     edt = models.CharField(max_length=255, blank=True)
     document = models.FileField(upload_to='documents/')
 
+
+class QuotedMaterials(models.Model):
+    providerId = models.CharField(max_length=255, blank=True)
+    providerName = models.CharField(max_length=255, blank=True)
+    revision = models.PositiveIntegerField(blank=True)
+    document = models.FileField(upload_to='documents/')

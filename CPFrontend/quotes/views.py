@@ -4,7 +4,8 @@ from django.contrib.auth.decorators import login_required
 from requests.exceptions import ConnectionError
 
 from .services.QuoteCreator import QuoteCreator
-from .forms import QuotesForm
+from .services.ExtQuotedMaterialCreator import ExtQuotedMaterialCreator
+from .forms import QuotesForm, QuotedMaterialsForm
 
 import requests
 import json
@@ -90,7 +91,6 @@ def quotes_upload(request):
         print(exception)
         return render(request, 'quotes/quote_upload.html', {'menu_text': menu_texts.getComponent(),
                                                             'view_texts': view_texts.getComponent(),
-                                                            'form': form,
                                                             'error_message': 'Backend problem',
                                                             'instructions_title': instructions.getTitle(),
                                                             'instructions_steps': instructions.getSteps()
@@ -100,21 +100,110 @@ def quotes_upload(request):
         cleanup(uploaded_file_url)
         print("Backend connection problem")
         print(exception)
-        return render(request, 'rfqs/rfq_upload.html', {'menu_text': menu_texts.getComponent(),
-                                                        'view_texts': view_texts.getComponent(),
-                                                        'form': form,
-                                                        'error_message': 'Backend connection problem',
-                                                        'instructions_title': instructions.getTitle(),
-                                                        'instructions_steps': instructions.getSteps()
-                                                        })
+        return render(request, 'quotes/quote_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                            'view_texts': view_texts.getComponent(),
+                                                            'error_message': 'Backend connection problem',
+                                                            'instructions_title': instructions.getTitle(),
+                                                            'instructions_steps': instructions.getSteps()
+                                                            })
 
     except Exception as exception:
         cleanup(uploaded_file_url)
         print(exception)
         return render(request, 'quotes/quote_upload.html', {'menu_text': menu_texts.getComponent(),
                                                             'view_texts': view_texts.getComponent(),
-                                                            'form': form,
                                                             'error_message': 'General problem',
                                                             'instructions_title': instructions.getTitle(),
                                                             'instructions_steps': instructions.getSteps()
                                                             })
+
+
+@login_required(login_url='/auth/login')
+def quoted_materials_upload(request):
+    menu_texts = FrontendTexts('menu')
+    instructions = Instructions('quotes', 'materials_upload')
+    uploaded_file_url = ''
+    try:
+        if request.method == 'POST':
+            form = QuotedMaterialsForm(request.POST, request.FILES)
+            if form.is_valid():
+
+                data = ExtQuotedMaterialCreator()
+
+                providerId = form.cleaned_data['providerId']
+                providerName = form.cleaned_data['providerName']
+                revision = form.cleaned_data['revision']
+
+                data.setExtendedInformation(providerId, providerName, revision)
+
+                my_file = request.FILES['document']
+                fs = FileSystemStorage()
+                filename = fs.save(my_file.name, my_file)
+                uploaded_file_url = fs.url(filename)
+
+                result = data.createExtQuotedMaterialsfromCSV('.' + uploaded_file_url)
+
+                # print(json.dumps(result))
+
+                backend_host = MachineConfigurator().getBackend()
+                r = requests.post(backend_host + '/auth/quotes/materials', json=result)
+
+                backend_message = BackendMessage(json.loads(r.text))
+
+                cleanup(uploaded_file_url)
+
+                backend_result = []
+
+                if backend_message.errorInd:
+                    display_message = {}
+                    display_message['itemcode'] = "-"
+                    display_message['revision'] = "-"
+                    display_message['status'] = "-"
+                    backend_result.append(display_message)
+                else:
+                    backend_result = json.loads(backend_message.getValue())
+
+                return render(request, 'quotes/materials_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                                        'view_texts': view_texts.getComponent(),
+                                                                        'upload_result': backend_result})
+        else:
+            form = QuotedMaterialsForm()
+
+        return render(request, 'quotes/materials_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                                'view_texts': view_texts.getComponent(),
+                                                                'form': form,
+                                                                'instructions_title': instructions.getTitle(),
+                                                                'instructions_steps': instructions.getSteps()
+                                                                })
+
+    except ValueError as exception:
+        cleanup(uploaded_file_url)
+        print("There is a problem with the backend return value")
+        print(exception)
+        return render(request, 'quotes/materials_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                                'view_texts': view_texts.getComponent(),
+                                                                'error_message': 'Backend problem',
+                                                                'instructions_title': instructions.getTitle(),
+                                                                'instructions_steps': instructions.getSteps()
+                                                                })
+
+    except ConnectionError as exception:
+        cleanup(uploaded_file_url)
+        print("There is a problem with the backend return value")
+        print(exception)
+        return render(request, 'quotes/materials_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                                'view_texts': view_texts.getComponent(),
+                                                                'error_message': 'Backend connection problem',
+                                                                'instructions_title': instructions.getTitle(),
+                                                                'instructions_steps': instructions.getSteps()
+                                                                })
+
+    except Exception as exception:
+        cleanup(uploaded_file_url)
+        print(exception)
+        return render(request, 'quotes/materials_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                                'view_texts': view_texts.getComponent(),
+                                                                'error_message': "Frontend Error",
+                                                                'instructions_title': instructions.getTitle(),
+                                                                'instructions_steps': instructions.getSteps()
+                                                                })

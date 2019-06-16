@@ -63,5 +63,5 @@ class Quotes:
         self.edt = edt
 
     def to_json(self):
-        obj_list = [ ob.__dict__ for ob in self.materialList]
+        obj_list = [ob.__dict__ for ob in self.materialList]
         return obj_list

@@ -146,7 +146,6 @@ def singlexcheck(request):
 
                 return render(request, 'materials/singlexcheck.html', {'menu_text': menu_texts.getComponent(),
                                                                        'view_texts': view_texts.getComponent(),
-                                                                       'xform': form,
                                                                        'uploaded_materials': backend_result})
 
         else:

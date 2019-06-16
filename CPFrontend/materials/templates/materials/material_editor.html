@@ -61,16 +61,14 @@
             {% endfor %}
         </tbody>
       </table>
-
-       <a href="/materials/manage" class="btn btn-success" role="button">Back</a>
-
+       <p></p><a href="/materials/manage" class="btn btn-success" role="button">{{view_texts.editor.back}}</a></p>
   {% endif %}
 
    </div>
 
       {% if error_message %}
-          <p> {{ error_message }} </p>
-          <p></p><a href="/materials/manage" class="btn btn-success" role="button">{{view_texts.editor.back}}</a><p>
+          <p>{{ error_message }}</p>
+          <p><a href="/materials/manage" class="btn btn-success" role="button">{{view_texts.editor.back}}</a></p>
       {% endif %}
 
       {% block instructions %}

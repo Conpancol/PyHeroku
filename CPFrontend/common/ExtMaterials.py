@@ -23,3 +23,12 @@ class ExtMaterials(Material):
     def setQuantity(self, quantity):
         self.quantity = quantity
 
+    def getOrderNumber(self):
+        return self.orderNumber
+
+    def getUnit(self):
+        return self.unit
+
+    def getQuantity(self):
+        return self.quantity
+

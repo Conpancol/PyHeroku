@@ -16,6 +16,8 @@
 
   <h2>{{view_texts.multiplexcheck.main_title}}</h2>
 
+  {% if form %}
+
   <h4>{{view_texts.multiplexcheck.sub_title}}</h4>
 
   <form method="post" enctype="multipart/form-data">
@@ -32,6 +34,8 @@
     <button type="submit" class="btn btn-success">{{view_texts.multiplexcheck.submit}}</button>
 
   </form>
+
+  {% endif %}
 
   <div class="content-items">
   {% if uploaded_materials %}
@@ -55,12 +59,13 @@
             {% endfor %}
         </tbody>
       </table>
+      <p><a href="." class="btn btn-success" role="button">{{view_texts.editor.back}}</a></p>
   {% endif %}
   </div>
 
   {% if error_message %}
       <p> {{ error_message }} </p>
-      <p><a href="/materials/multiplexcheck" class="btn btn-success" role="button">{{view_texts.editor.back}}</a></p>
+      <p><a href="." class="btn btn-success" role="button">{{view_texts.editor.back}}</a></p>
   {% endif %}
 
   {% block instructions %}
