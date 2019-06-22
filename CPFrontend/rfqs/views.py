@@ -488,6 +488,7 @@ def rfq_basic_analyzer(request, code):
         if not backend_message.getErrorInd():
 
             rfq = json.loads(backend_message.getValue())
+
             rfq_service = RFQCreator()
             output_file = rfq_service.runBasicAnalysis(rfq)
 

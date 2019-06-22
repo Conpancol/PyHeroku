@@ -18,6 +18,7 @@ class RFQTools:
                     self.client = MongoClient(dburl, dport)
             except FileNotFoundError:
                 logging.info("RFQTools> Using default connection values")
+                print("RFQTools> Using default connection values")
                 dburl = 'localhost'
                 dport = 27017
                 self.client = MongoClient(dburl, dport)
@@ -26,6 +27,7 @@ class RFQTools:
 
         self.db = self.client.conpancol
         self.collection = self.db.rfquotes
+        self.quoted_materials = self.db.qmaterials
 
         logging.basicConfig(filename='./logs/material_finder.log',
                             level=logging.DEBUG,
@@ -77,4 +79,38 @@ class RFQTools:
 
         except Exception as error:
             logging.info("RFQMatcherContext> General exception found " + error)
+            return {}
+
+    def QuotedMaterialMatcher(self, current_rfq, providerId):
+        try:
+
+            itemcodes = {}
+
+            stages = [{'$match': {'internalCode': current_rfq}},
+                      {'$project': {'_id': 0, 'materialList.itemcode': 1}}]
+
+            items = self.collection.aggregate(stages).next()['materialList']
+
+            for item in items:
+                code = item['itemcode']
+
+                stages = [{'$match': {'providerId': providerId, 'itemcode': code, 'revision': 1}},
+                          {'$project': {'_id': 0, 'unitPrice': 1, 'projectId': 1}}]
+
+                try:
+                    data = self.quoted_materials.aggregate(stages).next()
+                    itemcodes[code] = [data['unitPrice'], data['projectId']]
+                except StopIteration as nodata:
+                    itemcodes[code] = ['-', '-']
+                    print(code + ' ' + str(nodata.value))
+                    continue
+
+            return itemcodes
+
+        except StopIteration as error:
+            logging.info("QuotedMaterialMatcher> Cursor return no elements - RFQ not found " + error)
+            return {}
+
+        except Exception as error:
+            logging.info("QuotedMaterialMatcher> General exception found " + error)
             return {}

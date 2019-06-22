@@ -8,7 +8,16 @@ from .RFQTools import RFQTools
 
 from common.Materials import Material
 from common.ExtMaterials import ExtMaterials
-from ..choices import *
+
+try:
+    from ..choices import *
+except FileNotFoundError:
+    INCOTERMS_CHOICES = (
+        (1, "FOB"),
+        (2, "CFR"),
+        (3, "CIF"),
+        (4, "EXW"),
+    )
 
 
 class RFQCreator:
@@ -276,6 +285,9 @@ class RFQCreator:
         labels.append('Unit')
         labels.append('# Plates')
         labels.append('History')
+        labels.append('Unit price')
+        labels.append('Project')
+        labels.append('Rev Date')
 
         internal_code = str(rfq["internalCode"])
         csvfile = 'RFQ-WAnalysis-' + internal_code + '_Conpancol.csv'
@@ -299,6 +311,9 @@ class RFQCreator:
 
                 tools = RFQTools()
                 item_history = tools.RFQMatcherContext(rfq["internalCode"])
+                # print(item_history)
+                provider_prices = tools.QuotedMaterialMatcher(rfq["internalCode"], 'MP10001')
+                print(provider_prices)
 
                 id = 1
 
@@ -323,6 +338,15 @@ class RFQCreator:
                         row.append(item_history[item["itemcode"]])
                     else:
                         row.append("-")
+
+                    if(len(provider_prices)) != 0:
+                        row.append(provider_prices[item["itemcode"]][0])
+                        row.append(provider_prices[item["itemcode"]][1])
+                        row.append('-')
+                    else:
+                        row.append('-')
+                        row.append('-')
+                        row.append('-')
 
                     writer.writerow(row)
                     id += 1
