@@ -17,7 +17,7 @@
       "text": "Ingrese los datos de los materiales cotizados:"
     },
     "steps": {
-      "1": "Prepare un archivo en Excel con la siguiente información por material cotizaco:",
+      "1": "Prepare un archivo en Excel con la siguiente información por material cotizado:",
       "2": "COL#1> numero de orden; COL#2> codigo del material; COL#3> cantidad (1.00 - punto decimal); COL#4> unidad (EA, M, M2, M3, KG); COL#5> Precio unitario; COL#6> Precio total; COL#7> Moneda; COL#8> Pais de origen; COL#9> Proyecto; COL#10> Fecha presentación",
       "3": "Exportar esta hoja a un archivo de texto. En Excel esto se hace mediante \"Guardar como\" > \"Texto delimitado por tabulaciones (*.txt)\".",
       "4": "Llene el formulario y al final seleccione el archivo con el listado de materiales cotizados. Importante: usar el código correcto asignado al proveedor (ver listado de proveedores).",
