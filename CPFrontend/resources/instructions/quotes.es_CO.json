@@ -6,7 +6,7 @@
       },
       "steps": {
         "1": "En principio no deberia ser necesario consultar si los materiales en el cotizacion se encuentran en la base de datos. Use las herramientas para ese fin.",
-        "2": "Si los materiales existen en la BD, cree un archivo en Excel en el que debe ir en columnas lo siguiente: COL#1> numero de orden; COL#2> codigo del material; COL#3> cantidad (1.00 - punto decimal); COL#4> unidad (EA, M, M2, M3, KG); COL#5> peso teorico (no es obligatorio, el sistema los puede calcular); COL#6> peso dado por el proveedor; COL#7> precio por unidad; COL#8> precio total; COL#9> moneda; COL#10> pais de origen del producto; COL#11> alguna anotacion",
+        "2": "Si los materiales existen en la BD, cree un archivo en Excel en el que debe ir en columnas lo siguiente: COL#1> número de orden; COL#2> código del material; COL#3> cantidad (1.00 - punto decimal); COL#4> unidad (EA, M, M2, M3, KG); COL#5> peso teórico (no es obligatorio, el sistema los puede calcular); COL#6> peso dado por el proveedor; COL#7> precio por unidad; COL#8> precio total; COL#9> moneda; COL#10> pais de origen del producto; COL#11> alguna anotación",
         "3": "Exportar esta hoja a un archivo de texto. En Excel esto se hace mediante \"Guardar como\" > \"Texto delimitado por tabulaciones (*.txt)\".",
         "4": "Llene el formulario y al final seleccione el archivo con el listado de materiales cotizados."
       }
@@ -18,9 +18,9 @@
     },
     "steps": {
       "1": "Prepare un archivo en Excel con la siguiente información por material cotizado:",
-      "2": "COL#1> numero de orden; COL#2> codigo del material; COL#3> cantidad (1.00 - punto decimal, eliminar comas); COL#4> unidad (EA, M, M2, M3, KG); COL#5> Precio unitario; COL#6> Precio total; COL#7> Moneda; COL#8> Pais de origen; COL#9> Proyecto; COL#10> Fecha presentación",
+      "2": "COL#1> número de orden; COL#2> código del material; COL#3> cantidad (1.00 - punto decimal, eliminar comas); COL#4> unidad (EA, M, M2, M3, KG); COL#5> Precio unitario; COL#6> Precio total; COL#7> Moneda; COL#8> Pais de origen; COL#9> Proyecto; COL#10> Fecha presentación",
       "3": "Exportar esta hoja a un archivo de texto. En Excel esto se hace mediante \"Guardar como\" > \"Texto delimitado por tabulaciones (*.txt)\".",
-      "4": "Llene el formulario y al final seleccione el archivo con el listado de materiales cotizados. Importante: usar el código correcto asignado al proveedor (ver listado de proveedores).",
+      "4": "Llene el formulario y al final seleccione el archivo con el listado de materiales cotizados. Importante: usar el código correcto del proveedor (ver listado de proveedores).",
     }
   }
 }
