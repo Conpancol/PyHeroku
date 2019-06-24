@@ -19,7 +19,7 @@
         "text" : "Esta herramienta le permite consultar si un material se encuentra o no en la base de datos:"
       },
       "steps": {
-        "1": "Simplemente ingrese el codigo del material y ejecute \"Submit\"",
+        "1": "Simplemente ingrese el codigo del material y ejecute \"Enviar\"",
         "2": "La consulta genera una tabla en la que se indicara el estado de este material",
         "3": "Si el material no esta en la base de datos, debe digitalizar su descripcion y luego seguir el procedimiento para cargarlos a la base de datos."
 
@@ -33,7 +33,7 @@
       },
       "steps": {
         "1": "Si tiene varios items por consultar, genere una lista de los codigos del material en un archivo de texto, colocando en una sola columna los codigos.",
-        "2": "Seleccione este archivo y ejecute \"Submit\"",
+        "2": "Seleccione este archivo y ejecute \"Enviar\"",
         "3": "El resultado de la consulta se mostrara una tabla.",
         "4": "Si un material o materiales no estan en la base de datos, debe digitalizar su descripcion y luego seguir el procedimiento para cargarlos a la base de datos."
       }
