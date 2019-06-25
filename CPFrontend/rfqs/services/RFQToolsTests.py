@@ -13,9 +13,11 @@ class MyTestCase(unittest.TestCase):
     def test_qmaterial_matcher(self):
 
         tools = RFQTools()
-        result = tools.QuotedMaterialMatcher(3412, 'MP10001')
-        print(result["10400002011"][0])
-        print(result["10400002011"][1])
+        result = tools.QuotedMaterialMatcher(3411, 'MP10001')
+
+        for key, res in result.items():
+            print(key, ":", res)
+
         self.assertEqual(True, True)
 
 

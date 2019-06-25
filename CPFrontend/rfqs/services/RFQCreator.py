@@ -287,7 +287,7 @@ class RFQCreator:
         labels.append('History')
         labels.append('Unit price')
         labels.append('Project')
-        labels.append('Rev Date')
+        labels.append('Date')
 
         internal_code = str(rfq["internalCode"])
         csvfile = 'RFQ-WAnalysis-' + internal_code + '_Conpancol.csv'
@@ -342,7 +342,7 @@ class RFQCreator:
                     if(len(provider_prices)) != 0:
                         row.append(provider_prices[item["itemcode"]][0])
                         row.append(provider_prices[item["itemcode"]][1])
-                        row.append('-')
+                        row.append(provider_prices[item["itemcode"]][2])
                     else:
                         row.append('-')
                         row.append('-')

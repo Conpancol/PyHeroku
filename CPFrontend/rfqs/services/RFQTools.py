@@ -1,4 +1,3 @@
-import csv
 import json
 import logging
 import os
@@ -94,15 +93,22 @@ class RFQTools:
             for item in items:
                 code = item['itemcode']
 
-                stages = [{'$match': {'providerId': providerId, 'itemcode': code, 'revision': 1}},
-                          {'$project': {'_id': 0, 'unitPrice': 1, 'projectId': 1}}]
+                stages = [{'$match': {
+                    'providerId': providerId,
+                    'itemcode': code,
+                    'revision': 1}},
+                    {'$sort': {'projectId': -1}},
+                    {'$project': {
+                        '_id': 0,
+                        'unitPrice': 1,
+                        'projectId': 1,
+                        'updateDate': 1}}]
 
                 try:
                     data = self.quoted_materials.aggregate(stages).next()
-                    itemcodes[code] = [data['unitPrice'], data['projectId']]
+                    itemcodes[code] = [data['unitPrice'], data['projectId'], data['updateDate']]
                 except StopIteration as nodata:
-                    itemcodes[code] = ['-', '-']
-                    print(code + ' ' + str(nodata.value))
+                    itemcodes[code] = ['-', '-','-']
                     continue
 
             return itemcodes
