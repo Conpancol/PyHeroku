@@ -22,5 +22,24 @@
       "3": "Exportar esta hoja a un archivo de texto. En Excel esto se hace mediante \"Guardar como\" > \"Texto delimitado por tabulaciones (*.txt)\".",
       "4": "Llene el formulario y al final seleccione el archivo con el listado de materiales cotizados. Importante: usar el código correcto del proveedor (ver listado de proveedores)."
     }
+  },
+  "manage" : {
+      "title": {
+        "label": "Instrucciones",
+        "text" : "Gestión de Cotizaciones"
+      },
+      "steps": {
+        "1": "Editar información de una cotización determinada"
+      }
+  },
+  "edit" : {
+    "title": {
+      "label": "Instrucciones",
+      "text": "Edita las entradas de una Cotización en la DB"
+    },
+    "steps": {
+      "1": "Llenar el formulario con la información que requiera cambiar",
+      "2": "Enviar"
+    }
   }
 }

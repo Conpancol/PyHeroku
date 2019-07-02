@@ -16,7 +16,8 @@
     "Quotes" : {
       "main" : "Cotizaciones",
       "uploader" : "Adicionar",
-      "materials_uploader" : "Subir cotizaciones materiales"
+      "materials_uploader" : "Subir materiales cotizados",
+      "manager" : "Herramientas"
     },
     "Materials" : {
       "main" : "Materiales",

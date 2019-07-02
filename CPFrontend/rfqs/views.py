@@ -346,7 +346,7 @@ def rfq_manager(request):
 
 
 @login_required(login_url='/auth/login')
-def rfq_material_editor_test(request, code):
+def rfq_material_editor(request, code):
     menu_texts = FrontendTexts('menu')
     instructions = Instructions('rfqs', 'edit')
     try:

@@ -14,18 +14,18 @@
 
 <div class="content">
 
-    {% if rfq_form %}
+    {% if quote_form %}
 
     <h2>{{view_texts.editor.main_title}}</h2>
 
     <form action="" method="POST">
     {% csrf_token %}
 
-    {% for hidden in rfq.hidden_fields %}
+    {% for hidden in quote_form.hidden_fields %}
         {{ hidden }}
     {% endfor %}
 
-    {% for field in rfq_form.visible_fields %}
+    {% for field in quote_form.visible_fields %}
           <div class="form-group">
             <label for="{{ field.id_for_label }}">{{ field.label }}</label>
             {{ field |add_class:'form-control'}}
@@ -34,6 +34,35 @@
             {% endfor %}
           </div>
         {% endfor %}
+
+        <label for="materials_list">Material list</label>
+
+        <table class="table table-dark">
+          <thead>
+            <tr>
+                <th scope="col">Order No</th>
+                <th scope="col">Itemcode</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Unit</th>
+                <th scope="col">Unit price</th>
+                <th scope="col">Total price</th>
+            </tr>
+          </thead>
+        <tbody>
+            <tr>
+            {{ materials_formset.management_form }}
+            {% for material_form in materials_formset %}
+            <tr>
+                <td>{{ material_form.orderNumber | add_class:'form-control'}}</td>
+                <td>{{ material_form.itemcode | add_class:'form-control'}}</td>
+                <td>{{ material_form.quantity | add_class:'form-control'}}</td>
+                <td>{{ material_form.unit |add_class:'form-control'}}</td>
+                <td>{{ material_form.unitPrice |add_class:'form-control'}}</td>
+                <td>{{ material_form.totalPrice |add_class:'form-control'}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
 
     <button type="submit" class="btn btn-success">{{view_texts.editor.submit}}</button>
 
@@ -50,7 +79,7 @@
           <thead>
             <tr>
                 <th scope="col">Project code</th>
-                <th scope="col">Request code</th>
+                <th scope="col">Quotation code</th>
                 <th scope="col">Status</th>
             </tr>
           </thead>
@@ -64,7 +93,7 @@
         </tbody>
       </table>
 
-       <a href="/rfqs/manage" class="btn btn-success" role="button">{{view_texts.editor.back}}</a>
+       <a href="/quotes/manage" class="btn btn-success" role="button">{{view_texts.editor.back}}</a>
 
    </div>
 
@@ -73,7 +102,7 @@
     {% if error_message %}
           <h2>{{view_texts.editor.main_result_title}}</h2>
           <p> {{ error_message }} </p>
-          <p><a href="/rfqs/manage" class="btn btn-success" role="button">{{view_texts.editor.back}}</a></p>
+          <p><a href="/quotes/manage" class="btn btn-success" role="button">{{view_texts.editor.back}}</a></p>
     {% endif %}
 
     <p></p>

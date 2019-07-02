@@ -7,7 +7,7 @@
       "labels" : {
         "internalCode": "Código interno",
         "externalCode": "Código externo",
-        "providerCode": "Codigo proveedor",
+        "providerCode": "Código proveedor",
         "receivedDate": "Fecha recibido",
         "sentDate": "Fecha enviado",
         "user": "Usuario",
@@ -30,6 +30,24 @@
         "revision": "Revisión",
         "document": "Documento"
       }
+    },
+    "selector" : {
+      "main_title" : "Seleccione la cotización por código interno y la herramienta",
+      "submit": "Enviar",
+      "back" : "Atras",
+      "labels" : {
+        "internalCode": "Código",
+        "action": "Acción"
+      },
+      "choices" : {
+        "edit": "Editar"
+      }
+    },
+    "editor" : {
+      "main_title" : "Edite la información de la Cotización seleccionada",
+      "main_result_title" : "Actualización de la Cotización - resultado",
+      "submit": "Enviar",
+      "back" : "Atras"
     }
   }
 }

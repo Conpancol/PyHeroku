@@ -12,51 +12,51 @@ class Quotes:
         self.providerName = "X"
         self.contactName = "X"
         self.incoterms = "X"
-        self.materialList = []
         self.note = "NA"
         self.edt = "NA"
+        self.materialList = []
 
     def setIntenalCode(self, code):
         self.internalCode = code
 
-    def setExternalCode(self,code):
+    def setExternalCode(self, code):
         self.externalCode = code
 
-    def setProviderCode(self,code):
+    def setProviderCode(self, code):
         self.providerCode = code
 
-    def setUser(self,user):
+    def setUser(self, user):
         self.user = user
 
-    def setProviderId(self,id):
+    def setProviderId(self, id):
         self.providerId = id
 
-    def setProviderName(self,provider):
+    def setProviderName(self, provider):
         self.providerName = provider
 
-    def setContactName(self,contact):
+    def setContactName(self, contact):
         self.contactName = contact
 
     def setMaterialList(self, materials):
         for mt in materials:
             self.materialList.append(mt)
 
-    def setReceivedDate(self,date):
+    def setReceivedDate(self, date):
         self.receivedDate = date
 
-    def setProcessedDate(self,date):
+    def setProcessedDate(self, date):
         self.processedDate = date
 
-    def setSentDate(self,date):
+    def setSentDate(self, date):
         self.sentDate = date
 
-    def setUser(self,user):
+    def setUser(self, user):
         self.user = user
 
-    def setIncoterms(self,incoterms):
+    def setIncoterms(self, incoterms):
         self.incoterms = incoterms
 
-    def setNote(self,note):
+    def setNote(self, note):
         self.note = note
 
     def setEdt(self, edt):
