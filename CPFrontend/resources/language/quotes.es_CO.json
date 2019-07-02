@@ -40,10 +40,17 @@
         "action": "Acción"
       },
       "choices" : {
-        "edit": "Editar"
+        "edit": "Editar",
+        "edit_materials": "Editar materiales"
       }
     },
     "editor" : {
+      "main_title" : "Edite la información de la Cotización seleccionada",
+      "main_result_title" : "Actualización de la Cotización - resultado",
+      "submit": "Enviar",
+      "back" : "Atras"
+    },
+    "material_editor" : {
       "main_title" : "Edite la información de la Cotización seleccionada",
       "main_result_title" : "Actualización de la Cotización - resultado",
       "submit": "Enviar",

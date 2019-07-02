@@ -51,6 +51,7 @@ class QuotedMaterialForm(forms.Form):
     unit = forms.CharField(max_length=255)
     unitPrice = forms.FloatField()
     totalPrice = forms.FloatField()
+    revision = forms.IntegerField()
 
 
 class QuotedMaterialsForm(forms.ModelForm):
@@ -59,8 +60,7 @@ class QuotedMaterialsForm(forms.ModelForm):
         labels = view_texts.getComponent()['materials_upload']['labels']
         fields = ('providerId',
                   'providerName',
-                  'revision',
-                  'document')
+                  'revision')
 
 
 class SelectorForm(forms.Form):

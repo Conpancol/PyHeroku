@@ -7,6 +7,7 @@ from .Quotes import *
 from common.Materials import Material
 from common.ExtMaterials import ExtMaterials
 from common.QuotedMaterials import QuotedMaterials
+from common.ExtQuotedMaterials import ExtQuotedMaterials
 
 
 class QuoteCreator:
@@ -169,6 +170,38 @@ class QuoteCreator:
 
             quote_json = quote.__dict__
             quote_json['materialList'] = quote.to_json()
+
+            self.quote_list.append(quote_json)
+
+            return self.quote_list
+
+        except IOError as error:
+            logging.info(error)
+            return self.quote_list
+
+    def editQuotedMaterials(self, quote_form, material_data):
+        try:
+
+            material = Material()
+            material.setItemCode(material_data['itemcode'])
+            material.setDescription(material_data['description'])
+            material.setType(material_data['type'])
+            material.setCategory(material_data['category'])
+            material.setDimensions(material_data['dimensions'])
+
+            ext_material = ExtMaterials(material)
+            ext_material.setOrderNumber(material_data['orderNumber'])
+            ext_material.setQuantity(material_data['quantity'])
+            ext_material.setUnit(material_data['unit'])
+
+            quoted_material = QuotedMaterials(ext_material)
+            quoted_material.setUnitPrice(quote_form.cleaned_data['unitPrice'])
+            quoted_material.setTotalPrice(quote_form.cleaned_data['totalPrice'])
+
+            quote = ExtQuotedMaterials(quoted_material)
+            quote.setRevision(quote_form.cleaned_data['revision'])
+
+            quote_json = quote.__dict__
 
             self.quote_list.append(quote_json)
 

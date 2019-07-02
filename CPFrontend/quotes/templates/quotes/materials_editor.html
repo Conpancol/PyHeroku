@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% load static %}
+
+{% block menu %}
+
+{% include "navbar.html" %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="content">
+
+    {% if quote_form %}
+
+    <h2>{{view_texts.material_editor.main_title}}</h2>
+
+    <form action="" method="POST">
+    {% csrf_token %}
+
+    {% for hidden in quote_form.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+
+    {% for field in quote_form.visible_fields %}
+          <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field |add_class:'form-control'}}
+            {% for error in field.errors %}
+              <span class="help-block">{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% endfor %}
+
+    <button type="submit" class="btn btn-success">{{view_texts.material_editor.submit}}</button>
+
+    </form>
+
+    {% endif %}
+
+   <div class="content-items">
+      {% if updated_materials %}
+
+      <h2>{{view_texts.material_editor.main_result_title}}</h2>
+
+      <table class="table table-dark">
+          <thead>
+            <tr>
+                <th scope="col">Itemcode</th>
+                <th scope="col">Project code</th>
+                <th scope="col">Status</th>
+            </tr>
+          </thead>
+        <tbody>
+            <tr>
+            {% for material in updated_materials %}
+            <tr>
+                <td>{{ material.itemcode }}</td> <td>{{ material.projectId }}</td> <td>{{ material.status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+
+       <a href="/quotes/manage" class="btn btn-success" role="button">{{view_texts.material_editor.back}}</a>
+
+   </div>
+
+    {% endif %}
+
+    {% if error_message %}
+          <h2>{{view_texts.editor.main_result_title}}</h2>
+          <p> {{ error_message }} </p>
+          <p><a href="/quotes/manage" class="btn btn-success" role="button">{{view_texts.material_editor.back}}</a></p>
+    {% endif %}
+
+    <p></p>
+
+    {% block instructions %}
+        {% include "instructions.html" %}
+    {% endblock %}
+
+</div>
+
+{% endblock %}

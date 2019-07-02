@@ -237,6 +237,8 @@ def quotes_manager(request):
 
                 if action == '1':
                     return redirect('edit/' + code)
+                elif action == '2':
+                    return redirect('edit/materials/' + code)
 
         else:
             selector_form = SelectorForm()
@@ -277,7 +279,7 @@ def quotes_manager(request):
 
 
 @login_required(login_url='/auth/login')
-def quotes_material_editor(request, code):
+def quotes_editor(request, code):
     menu_texts = FrontendTexts('menu')
     instructions = Instructions('quotes', 'edit')
     try:
@@ -340,7 +342,7 @@ def quotes_material_editor(request, code):
         print(exception)
         return render(request, 'quotes/quote_editor.html', {'menu_text': menu_texts.getComponent(),
                                                             'view_texts': view_texts.getComponent(),
-                                                            'error_message': 'No such RFQ exists in the DB: ' + code,
+                                                            'error_message': 'No such QUOTE exists in the DB: ' + code,
                                                             'instructions_title': instructions.getTitle(),
                                                             'instructions_steps': instructions.getSteps()})
 
@@ -361,3 +363,80 @@ def quotes_material_editor(request, code):
                                                             'instructions_title': instructions.getTitle(),
                                                             'instructions_steps': instructions.getSteps()})
 
+
+@login_required(login_url='/auth/login')
+def quoted_materials_editor(request, code):
+    menu_texts = FrontendTexts('menu')
+    instructions = Instructions('quotes', 'edit')
+    try:
+
+        backend_host = MachineConfigurator().getBackend()
+
+        r = requests.post(backend_host + '/auth/quotes/materials/' + code)
+
+        backend_message = BackendMessage(json.loads(r.text))
+
+        quoted_materials_data = json.loads(backend_message.getValue())
+
+        quoted_material_form = QuotedMaterialForm(initial=quoted_materials_data)
+
+        if request.method == 'POST':
+
+            quoted_material_form = QuotedMaterialForm(request.POST)
+
+            if quoted_material_form.is_valid():
+                # ... update current material with the data provided
+                # ... send data to backend
+
+                creator = QuoteCreator()
+                result = creator.editQuotedMaterials(quoted_material_form, quoted_materials_data)
+
+                result_json = []
+
+                for quote in result:
+                    result_json.append(json.dumps(quote))
+
+                r = requests.put(backend_host + '/auth/quotes/materials/' + code, json=result)
+
+                backend_message = BackendMessage(json.loads(r.text))
+
+                backend_result = json.loads(backend_message.getValue())
+
+                return render(request, 'quotes/materials_editor.html', {'menu_text': menu_texts.getComponent(),
+                                                                        'view_texts': view_texts.getComponent(),
+                                                                        'updated_materials': backend_result})
+            else:
+                print("Invalid form")
+
+        return render(request, 'quotes/materials_editor.html', {'menu_text': menu_texts.getComponent(),
+                                                                'view_texts': view_texts.getComponent(),
+                                                                'quote_form': quoted_material_form,
+                                                                'instructions_title': instructions.getTitle(),
+                                                                'instructions_steps': instructions.getSteps()})
+
+    except ValueError as exception:
+        print("There is a problem with the backend return value")
+        print(exception)
+        return render(request, 'quotes/materials_editor.html', {'menu_text': menu_texts.getComponent(),
+                                                                'view_texts': view_texts.getComponent(),
+                                                                'error_message': 'No such quoted material exists ' +
+                                                                                 'in the DB: ' + code,
+                                                                'instructions_title': instructions.getTitle(),
+                                                                'instructions_steps': instructions.getSteps()})
+
+    except ConnectionError as exception:
+        print("Backend connection problem")
+        print(exception)
+        return render(request, 'quotes/materials_editor.html', {'menu_text': menu_texts.getComponent(),
+                                                                'view_texts': view_texts.getComponent(),
+                                                                'error_message': 'Backend connection problem',
+                                                                'instructions_title': instructions.getTitle(),
+                                                                'instructions_steps': instructions.getSteps()})
+
+    except Exception as exception:
+        print(exception)
+        return render(request, 'quotes/materials_editor.html', {'menu_text': menu_texts.getComponent(),
+                                                                'view_texts': view_texts.getComponent(),
+                                                                'error_message': 'System error',
+                                                                'instructions_title': instructions.getTitle(),
+                                                                'instructions_steps': instructions.getSteps()})
