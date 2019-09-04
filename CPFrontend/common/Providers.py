@@ -2,12 +2,13 @@ class Providers:
     """clase base de proveedores"""
     def __init__(self):
         self.providerId = ''
+        self.countryCode = ''
+        self.coordinates = ''
+
         self.name = ''
         self.category = ''
         self.country = ''
-        self.countryCode = ''
         self.city = ''
-        self.coordinates = ''
         self.webpage = ''
         self.address = ''
         self.phone = ''
@@ -15,10 +16,11 @@ class Providers:
         self.contactNames = ''
         self.specialty = ''
         self.taxId = ''
-        self.hasDataProtection = False
         self.bank = ''
         self.iban = ''
         self.comments = []
+        self.hasDataProtection = False
+        self.procurementCodes = []
 
     def setProviderId(self, id):
         self.providerId = id
@@ -73,3 +75,14 @@ class Providers:
 
     def setComments(self, comments):
         self.comments = comments
+
+    def setProcurementCodes(self, procurementCodes):
+        self.comments = procurementCodes
+
+    def to_json_comments(self):
+        obj_list = [ob.__dict__ for ob in self.comments]
+        return obj_list
+
+    def to_json_procurement(self):
+        obj_list = [ob.__dict__ for ob in self.comments]
+        return obj_list

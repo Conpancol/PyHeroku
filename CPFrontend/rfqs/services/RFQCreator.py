@@ -50,6 +50,7 @@ class RFQCreator:
                         itemCode = row[1]
                         quantity = float(row[2])
                         unit = row[3]
+                        print(orderNum, itemCode, quantity, unit)
                         material = Material()
                         material.setItemCode(itemCode)
                         extendedMaterial = ExtMaterials(material)
@@ -59,6 +60,7 @@ class RFQCreator:
                         extmaterials.append(extendedMaterial)
 
                     except ValueError:
+                        print('There is a wrong data format entry. Please check')
                         logging.info('There is a wrong data format entry. Please check')
                         continue
 

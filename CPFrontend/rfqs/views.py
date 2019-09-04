@@ -65,7 +65,7 @@ def rfq_upload(request):
 
                 result = rfq.createRFQfromCSV('.' + uploaded_file_url)
 
-                # ... print(json.dumps(result))
+                print(json.dumps(result))
 
                 backend_host = MachineConfigurator().getBackend()
                 r = requests.post(backend_host + '/auth/rfqs/', json=result)

@@ -18,7 +18,7 @@ class ProviderCreator:
 
     def createProvidersfromCSV(self, csvfile):
         try:
-            with open(csvfile, 'r', encoding='utf-8') as f:
+            with open(csvfile, 'r', encoding='ISO-8859-1', newline='') as f:
                 reader = csv.reader(f, dialect="excel-tab")
                 filename = csvfile.split('/')[-1]
                 logging.info('Opened file: ' + filename)
@@ -38,6 +38,11 @@ class ProviderCreator:
                     taxid = row[10]
                     bank = row[11]
                     iban = row[12]
+                    comments = [].append(row[13])
+                    hasDataProtection = False
+                    if row[14] == "True" or row[14] == "true":
+                        hasDataProtection = True
+                    procurementCodes = [].append(row[15])
 
                     provider = Providers()
                     provider.setProviderId('NA')
@@ -54,10 +59,11 @@ class ProviderCreator:
                     provider.setContactNames(contactNames)
                     provider.setSpecialty(specialty)
                     provider.setTaxId(taxid)
-                    provider.setComments([])
-                    provider.setHasDataProtection(False)
+                    provider.setComments(comments)
+                    provider.setHasDataProtection(hasDataProtection)
                     provider.setBank(bank)
                     provider.setIban(iban)
+                    provider.setProcurementCodes(procurementCodes)
 
                     obj_id = provider.__dict__
                     self.provider_list.append(obj_id)
