@@ -8,6 +8,7 @@ from requests.exceptions import ConnectionError
 from .services.QuoteCreator import QuoteCreator
 from .services.ExtQuotedMaterialCreator import ExtQuotedMaterialCreator
 from .forms import QuotesForm, QuotedMaterialsForm, SelectorForm, QuotesFormOnlyinfo, QuotedMaterialForm
+from .forms import SmartQuotesForm
 
 import requests
 import json
@@ -55,6 +56,120 @@ def quotes_upload(request):
                 incoterms = form.cleaned_data['incoterms']
                 note = form.cleaned_data['note']
                 edt = form.cleaned_data['edt']
+
+                quote.setQuoteInformation(internal_code, external_code, provider_code, provider_id, provider_name,
+                                          contact_name, received_date, sent_date, user, edt)
+                quote.setQuoteIncoterms(incoterms)
+                quote.setQuoteNote(note)
+
+                myfile = request.FILES['document']
+                fs = FileSystemStorage()
+                filename = fs.save(myfile.name, myfile)
+                uploaded_file_url = fs.url(filename)
+
+                result = quote.createQuotefromCSV('.' + uploaded_file_url)
+
+                # ...  print(json.dumps(result))
+                backend_host = MachineConfigurator().getBackend()
+
+                r = requests.post(backend_host + '/auth/quotes/', json=result)
+
+                backend_message = BackendMessage(json.loads(r.text))
+
+                cleanup(uploaded_file_url)
+
+                backend_result = []
+
+                if backend_message.errorInd:
+                    display_message = {}
+                    display_message['internalCode'] = internal_code
+                    display_message['externalCode'] = external_code
+                    display_message['status'] = backend_message.getValue()
+                    backend_result.append(display_message)
+                else:
+                    backend_result = json.loads(backend_message.getValue())
+
+                return render(request, 'quotes/quote_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                                    'view_texts': view_texts.getComponent(),
+                                                                    'upload_result': backend_result})
+
+        return render(request, 'quotes/quote_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                            'view_texts': view_texts.getComponent(),
+                                                            'form': form,
+                                                            'instructions_title': instructions.getTitle(),
+                                                            'instructions_steps': instructions.getSteps()})
+
+    except ValueError as exception:
+        cleanup(uploaded_file_url)
+        print("There is a problem with the backend return value")
+        print(exception)
+        return render(request, 'quotes/quote_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                            'view_texts': view_texts.getComponent(),
+                                                            'error_message': 'Backend problem',
+                                                            'instructions_title': instructions.getTitle(),
+                                                            'instructions_steps': instructions.getSteps()
+                                                            })
+
+    except ConnectionError as exception:
+        cleanup(uploaded_file_url)
+        print("Backend connection problem")
+        print(exception)
+        return render(request, 'quotes/quote_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                            'view_texts': view_texts.getComponent(),
+                                                            'error_message': 'Backend connection problem',
+                                                            'instructions_title': instructions.getTitle(),
+                                                            'instructions_steps': instructions.getSteps()
+                                                            })
+
+    except Exception as exception:
+        cleanup(uploaded_file_url)
+        print(exception)
+        return render(request, 'quotes/quote_upload.html', {'menu_text': menu_texts.getComponent(),
+                                                            'view_texts': view_texts.getComponent(),
+                                                            'error_message': 'General problem',
+                                                            'instructions_title': instructions.getTitle(),
+                                                            'instructions_steps': instructions.getSteps()
+                                                            })
+
+
+@login_required(login_url='/auth/login')
+def smart_quotes_upload(request):
+    menu_texts = FrontendTexts('menu')
+    instructions = Instructions('quotes', 'upload')
+    uploaded_file_url = ''
+    try:
+
+        backend_host = MachineConfigurator().getBackend()
+        r = requests.get(backend_host + '/auth/providers/short')
+        backend_message = BackendMessage(json.loads(r.text))
+        providers_list = json.loads(backend_message.getValue())
+        
+        form = SmartQuotesForm(providers_list)
+
+        if request.method == 'POST':
+            form = SmartQuotesForm(providers_list, request.POST, request.FILES)
+            if form.is_valid():
+
+                quote = QuoteCreator()
+
+                internal_code = form.cleaned_data['internalCode']
+                external_code = form.cleaned_data['externalCode']
+                provider_code = form.cleaned_data['providerCode']
+                received_date = form.cleaned_data['receivedDate']
+                sent_date = form.cleaned_data['sentDate']
+                user = form.cleaned_data['user']
+                contact_name = form.cleaned_data['contactName']
+                incoterms = form.cleaned_data['incoterms']
+                note = form.cleaned_data['note']
+                edt = form.cleaned_data['edt']
+
+                provider = int(form.cleaned_data[ 'providerId' ])
+                provider_choices = form.getProviderInfo()[provider - 1][1].split(' | ')
+
+                # ... print(provider_choices[0], provider_choices[1])
+
+                provider_id = provider_choices[0]
+                provider_name = provider_choices[1]
 
                 quote.setQuoteInformation(internal_code, external_code, provider_code, provider_id, provider_name,
                                           contact_name, received_date, sent_date, user, edt)
