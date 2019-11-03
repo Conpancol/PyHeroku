@@ -25,7 +25,10 @@ class RFQCreator:
     def __init__(self):
         self.rfq = RequestForQuotes()
         self.rfq_list = []
-        logging.basicConfig(filename='logs/rfqcreator.log', level=logging.DEBUG)
+        try:
+            logging.basicConfig(filename='logs/rfqcreator.log', level=logging.DEBUG)
+        except FileNotFoundError:
+            print("logging disabled for RFQCreator")
 
     def setRFQInformation(self, internalCode, externalCode, sender, company, receivedDate):
         self.rfq.setIntenalCode(internalCode)
@@ -155,27 +158,29 @@ class RFQCreator:
     def getNumberPlates(self, dimensions, total_area):
         nplates = 0.0
         all_dims = dimensions.split(',')
-
         try:
-
             for dm in all_dims:
                 if re.search('MM', dm):
-                    dim_values = []
-                    dims = dm.split('X')
-                    if len(dims) == 3:
-                        for dd in dims:
-                            try:
-                                dim_values.append(float(dd.replace(' ', '').replace('MM', '')))
-                            except ValueError:
-                                dim_values.append(0.0)
-                                logging.info('Got a Value conversion exception, please check')
-                                logging.info(dd.replace(' ', '').replace('MM', ''))
+                    max_occurences = len(re.findall('MM', dm))
+                    if max_occurences == 3:
+                        dim_values = []
+                        dims = dm.split('X')
+                        if len(dims) == 3:
+                            for dd in dims:
+                                try:
+                                    dim_values.append(float(dd.replace(' ', '').replace('MM', '')))
+                                except ValueError:
+                                    dim_values.append(0.0)
+                                    logging.info('Got a Value conversion exception, please check')
+                                    logging.info(dd.replace(' ', '').replace('MM', ''))
 
-                        area = dim_values[0] * dim_values[1] * 0.000001
-                        nplates = format(total_area / area, '.2f')
-                        result = str(dim_values) + str(total_area) + str(nplates)
-                        logging.info(result)
+                            area = dim_values[0] * dim_values[1] * 0.000001
+                            nplates = format(total_area / area, '.2f')
+                            result = str(dim_values) + " " + str(total_area) + " " + str(nplates)
+                            print(result)
         except Exception as e:
+            print("There is problem with your dimensions")
+            print(e)
             logging.info("There is a problem with your dimensions")
             logging.info(e)
 

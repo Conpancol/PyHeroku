@@ -7,13 +7,16 @@ class MyTestCase(unittest.TestCase):
     def test_getNumberPlates(self):
 
         good_dimensions = "4' X 8' X 3/4\",8000.0MM X 2000.0MM X 10.0MM"
-        bad_dimensions = "4' X 8' X 10.00MM,8000.0MM X 2000.0MM X 10.0MM"
+        bad_dimensions = "4' X 8' X 10.00MM,8000.0MM X 2000.0MM X 10.0M"
+        real_example = "4' X 8' X 1.2MM,1219.2MM X 2438.4MM X 1.2MM"
 
         rfq_service = RFQCreator()
-        nplates = rfq_service.getNumberPlates(good_dimensions,32)
+        nplates = rfq_service.getNumberPlates(good_dimensions, 32)
         self.assertEqual('2.00', str(nplates))
         nplates = rfq_service.getNumberPlates(bad_dimensions, 32)
         self.assertEqual('0.0', str(nplates))
+        nplates = rfq_service.getNumberPlates(real_example, 130.68)
+        self.assertEqual('43.96', str(nplates))
 
     def test_runBasicAnalysis(self):
 

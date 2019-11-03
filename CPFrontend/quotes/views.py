@@ -143,7 +143,7 @@ def smart_quotes_upload(request):
         r = requests.get(backend_host + '/auth/providers/short')
         backend_message = BackendMessage(json.loads(r.text))
         providers_list = json.loads(backend_message.getValue())
-        
+
         form = SmartQuotesForm(providers_list)
 
         if request.method == 'POST':
